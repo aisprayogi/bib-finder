@@ -271,7 +271,7 @@
           <div class="pill" id="countPill">0 hasil</div>
           <div class="pill" id="datasetPill">dataset: belum dimuat</div>
           <div class="pill" id="cachePill">cache: —</div>
-          <div class="pill">aturan: ≤1 edit</div>
+          <div class="pill" id="rulePill">aturan: ≤1 edit</div>
         </div>
       </div>
     </div>
@@ -348,6 +348,7 @@
   const countPill = document.getElementById('countPill');
   const datasetPill = document.getElementById('datasetPill');
   const cachePill = document.getElementById('cachePill');
+  const rulePill = document.getElementById('rulePill');
   const noDataEl = document.getElementById('noData');
   const noMatchesEl = document.getElementById('noMatches');
   const toTop = document.getElementById('toTop');
@@ -582,6 +583,8 @@
   function refresh() {
     const raw = digitsOnly(bibInput.value);
     const minLen = Math.max(1, parseInt(minDigits.value || '1', 10));
+    const requireSameLen = sameLen.checked;
+    const requireExact = exactOnly.checked;
 
     grid.innerHTML = '';
     noMatchesEl.hidden = true;
@@ -590,6 +593,15 @@
     LAST_RESULTS = [];
     LAST_QUERY_DIGITS = raw || '';
     resultsToolbar.hidden = true;
+
+    // Update rule pill
+    if (!requireSameLen && !requireExact) {
+        rulePill.textContent = 'aturan: mengandung input';
+    } else if (requireExact) {
+        rulePill.textContent = 'aturan: cocok tepat';
+    } else {
+        rulePill.textContent = 'aturan: ≤1 edit';
+    }
 
     if (DATA.length === 0) {
       noDataEl.hidden = false;
@@ -606,22 +618,36 @@
 
     resultsTitle.textContent = `Hasil Pencarian untuk "${raw}"`;
     const results = [];
-    const requireSameLen = sameLen.checked;
-    const requireExact = exactOnly.checked;
 
     for (const rec of DATA) {
       if (!rec || !Array.isArray(rec.bib_numbers) || rec.bib_numbers.length === 0) continue;
+      
       const matches = [];
       for (let idx = 0; idx < rec.bib_numbers.length; idx++) {
         const candidate = String(rec.bib_numbers[idx] ?? '');
         const candDigits = digitsOnly(candidate);
-        if (!candDigits || (requireSameLen && candDigits.length !== raw.length)) continue;
-        const d = bestDistance(raw, candDigits, ignoreZeros.checked);
-        if (requireExact ? (d.ok && d.dist === 0) : (d.ok && d.dist <= 1)) {
-          const conf = Array.isArray(rec.confidences) ? rec.confidences[idx] ?? null : null;
-          matches.push({ bib: candidate, dist: d.dist, conf });
+        if (!candDigits) continue;
+
+        // [LOGIKA BARU] Pilih metode pencarian
+        if (!requireSameLen && !requireExact) {
+            // --- Mode Contains (Default) ---
+            if (candDigits.includes(raw)) {
+                const conf = Array.isArray(rec.confidences) ? rec.confidences[idx] ?? null : null;
+                const pseudoDist = (candDigits === raw) ? 0 : 1;
+                matches.push({ bib: candidate, dist: pseudoDist, conf });
+            }
+        } else {
+            // --- Mode Fuzzy/Exact (Lama) ---
+            if (requireSameLen && candDigits.length !== raw.length) continue;
+
+            const d = bestDistance(raw, candDigits, ignoreZeros.checked);
+            if (requireExact ? (d.ok && d.dist === 0) : (d.ok && d.dist <= 1)) {
+                const conf = Array.isArray(rec.confidences) ? rec.confidences[idx] ?? null : null;
+                matches.push({ bib: candidate, dist: d.dist, conf });
+            }
         }
       }
+
       if (matches.length) {
         matches.sort((a, b) => (a.dist - b.dist) || ((b.conf ?? -1) - (a.conf ?? -1)));
         results.push({ rec, matches, bestDist: matches[0].dist, bestConf: matches[0].conf ?? -1 });
@@ -929,5 +955,4 @@
 </script>
 </body>
 </html>
-
 
