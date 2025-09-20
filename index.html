@@ -1463,32 +1463,32 @@
   let touchStartX = 0, touchEndX = 0;
   const SWIPE_THRESHOLD = 50;
 
-  // Header scroll behavior with hysteresis
+  // Header scroll behavior - simplified and more aggressive
   let lastScrollY = 0;
   let isCompact = false;
-  let scrollDirection = 'up';
-  let directionChangeTimeout = null;
   let scrollTimeout = null;
-  let isScrolling = false;
   
-  // Hysteresis thresholds to prevent jitter
-  const COMPACT_THRESHOLD = 200; // Scroll down to compact
-  const EXPAND_THRESHOLD = 100;  // Scroll up to expand
-  const DIRECTION_BUFFER = 50;   // Buffer for direction changes
+  // More aggressive thresholds to prevent oscillation
+  const COMPACT_THRESHOLD = 300;   // Scroll down to compact
+  const EXPAND_THRESHOLD = 50;     // Must scroll very close to top to expand
+  const UPDATE_DELAY = 100;        // Delay all updates to prevent rapid changes
 
   function updateHeaderState() {
     const currentScrollY = window.scrollY;
     
-    // Determine if we should be compact based on hysteresis
-    let shouldBeCompact = isCompact;
+    // Simple state logic with large hysteresis gap
+    let shouldBeCompact;
     
-    if (!isCompact && currentScrollY > COMPACT_THRESHOLD && scrollDirection === 'down') {
+    if (currentScrollY > COMPACT_THRESHOLD) {
       shouldBeCompact = true;
-    } else if (isCompact && (currentScrollY < EXPAND_THRESHOLD || scrollDirection === 'up')) {
+    } else if (currentScrollY < EXPAND_THRESHOLD) {
       shouldBeCompact = false;
+    } else {
+      // In the middle zone - maintain current state
+      shouldBeCompact = isCompact;
     }
     
-    // Apply state change only if it's different
+    // Only change state if different and apply immediately
     if (shouldBeCompact !== isCompact) {
       isCompact = shouldBeCompact;
       header.classList.toggle('compact', isCompact);
@@ -1499,44 +1499,14 @@
   }
 
   function handleScroll() {
-    const currentScrollY = window.scrollY;
-    const scrollDelta = currentScrollY - lastScrollY;
-    
-    // Only process significant scroll movements
-    if (Math.abs(scrollDelta) < 3) {
-      return;
-    }
-    
-    // Set scrolling flag
-    isScrolling = true;
-    
-    // Determine scroll direction with buffer
-    if (Math.abs(scrollDelta) > DIRECTION_BUFFER / 10) {
-      const newDirection = scrollDelta > 0 ? 'down' : 'up';
-      
-      if (newDirection !== scrollDirection) {
-        // Clear any pending direction change
-        clearTimeout(directionChangeTimeout);
-        
-        // Delay direction change to prevent rapid switching
-        directionChangeTimeout = setTimeout(() => {
-          scrollDirection = newDirection;
-          updateHeaderState();
-        }, 50);
-      } else {
-        // Same direction, update immediately
-        clearTimeout(directionChangeTimeout);
-        updateHeaderState();
-      }
-    }
-    
-    lastScrollY = currentScrollY;
-    
-    // Clear scrolling flag after a delay
+    // Clear any pending updates
     clearTimeout(scrollTimeout);
+    
+    // Debounce the update to prevent rapid changes
     scrollTimeout = setTimeout(() => {
-      isScrolling = false;
-    }, 100);
+      updateHeaderState();
+      lastScrollY = window.scrollY;
+    }, UPDATE_DELAY);
   }
 
   // Show/hide clear button based on input
