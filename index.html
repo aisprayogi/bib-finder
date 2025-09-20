@@ -89,25 +89,21 @@
   .btn.warn { background: var(--danger); border-color: color-mix(in oklab, var(--danger) 60%, var(--border)); color: #1b0b0b; }
   .btn[disabled] { opacity:.5; cursor:not-allowed; }
 
-  /* ---------- Opsi lanjutan ---------- */
+  /* ---------- Opsi lanjutan (DIPERBAIKI) ---------- */
   details { margin-top: 6px; background: var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow: var(--shadow); }
   summary { padding: 12px 14px; list-style:none; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:8px; }
   summary::-webkit-details-marker { display:none; }
   .optgrid {
     padding: 0 14px 14px;
     display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: start;
-  }
-  .settings-group, .toggles-group {
-    display: grid;
-    gap: 10px;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    align-items: end;
   }
   .field { display:flex; flex-direction:column; gap:6px; }
   .field label { font-size:12px; color: var(--muted); }
   .field input[type="number"], .field select { width: 100%; padding: 10px 12px; border-radius: 10px; border:1px solid var(--border); background: var(--card); color: var(--text); }
-  .switch { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background: var(--card); }
+  .switch { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background: var(--card); height: 46px; }
   .switch input { transform: scale(1.15); }
 
   /* ---------- Info pill ---------- */
@@ -206,11 +202,6 @@
     .v-nav { opacity: 0; }
     .v-body:hover .v-nav { opacity: 1; }
   }
-  @media (max-width: 768px) {
-    .optgrid {
-        grid-template-columns: 1fr;
-    }
-  }
   @media (max-width: 640px) {
     body { font-size: 15px; }
     .wrap { padding-left: 12px; padding-right: 12px; }
@@ -254,33 +245,29 @@
         <details id="advPanel">
           <summary>⚙️ Opsi lanjutan</summary>
           <div class="optgrid" role="group" aria-label="Opsi lanjutan">
-            <div class="settings-group">
-                <div class="field">
-                  <label for="minDigits">Minimal digit untuk pencarian</label>
-                  <input id="minDigits" type="number" min="1" step="1" value="2" />
-                </div>
-                <div class="field">
-                  <label for="sortMode">Urutkan hasil</label>
-                  <select id="sortMode">
-                    <option value="best">Terbaik (jarak → kepercayaan → nama)</option>
-                    <option value="conf">Kepercayaan tertinggi</option>
-                    <option value="name">Nama file (A→Z)</option>
-                  </select>
-                </div>
+            <div class="field">
+              <label for="minDigits">Minimal digit untuk pencarian</label>
+              <input id="minDigits" type="number" min="1" step="1" value="2" />
             </div>
-            <div class="toggles-group">
-                <div class="switch" title="Anggap 04 dan 4 setara saat pencocokan">
-                  <input id="ignoreZeros" type="checkbox" checked />
-                  <label for="ignoreZeros" style="margin:0;">Abaikan nol di depan</label>
-                </div>
-                <div class="switch" title="Wajibkan panjang bib kandidat sama dengan input">
-                  <input id="sameLen" type="checkbox" />
-                  <label for="sameLen" style="margin:0;">Wajibkan panjang sama</label>
-                </div>
-                <div class="switch" title="Hanya tampilkan kecocokan tepat (jarak 0)">
-                  <input id="exactOnly" type="checkbox" />
-                  <label for="exactOnly" style="margin:0;">Hanya cocok tepat</label>
-                </div>
+            <div class="field">
+              <label for="sortMode">Urutkan hasil</label>
+              <select id="sortMode">
+                <option value="best">Terbaik (jarak → kepercayaan → nama)</option>
+                <option value="conf">Kepercayaan tertinggi</option>
+                <option value="name">Nama file (A→Z)</option>
+              </select>
+            </div>
+            <div class="switch" title="Anggap 04 dan 4 setara saat pencocokan">
+              <input id="ignoreZeros" type="checkbox" checked />
+              <label for="ignoreZeros" style="margin:0;">Abaikan nol di depan</label>
+            </div>
+            <div class="switch" title="Wajibkan panjang bib kandidat sama dengan input">
+              <input id="sameLen" type="checkbox" />
+              <label for="sameLen" style="margin:0;">Wajibkan panjang sama</label>
+            </div>
+            <div class="switch" title="Hanya tampilkan kecocokan tepat (jarak 0)">
+              <input id="exactOnly" type="checkbox" />
+              <label for="exactOnly" style="margin:0;">Hanya cocok tepat</label>
             </div>
           </div>
         </details>
@@ -613,7 +600,6 @@
     LAST_QUERY_DIGITS = raw || '';
     resultsToolbar.hidden = true;
 
-    // Update rule pill
     if (!requireSameLen && !requireExact) {
         rulePill.textContent = 'aturan: mengandung input';
     } else if (requireExact) {
