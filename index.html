@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pencari Bib Pro — cepat, rapi, profesional</title>
+<meta name="color-scheme" content="dark light">
+<style>
+  /* ---------- Tema & tipografi ---------- */
+  :root {
+    --bg: #0b0c10;
+    --surface: #101218;
+    --card: #111319;
+    --muted: #9aa4af;
+    --text: #e8eaed;
+    --accent: #4fc3f7;
+    --accent-2: #64ffda;
+    --danger: #ff6b6b;
+    --ok: #42be65;
+    --border: #202434;
+    --ring: #6ee7ff;
+    --shadow: 0 1px 1px rgba(0,0,0,.2), 0 6px 18px rgba(0,0,0,.25);
+  }
+  [data-theme="light"] {
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --muted: #5b6570;
+    --text: #0f1720;
+    --accent: #0078d4;
+    --accent-2: #00b894;
+    --danger: #d83a3a;
+    --ok: #107c41;
+    --border: #e6e8ef;
+    --ring: #66c7ff;
+    --shadow: 0 1px 1px rgba(0,0,0,.05), 0 8px 22px rgba(0,0,0,.08);
+  }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+  }
+
+  /* Aturan Box-sizing Universal untuk Layout yang Konsisten */
+  html {
+    box-sizing: border-box;
+  }
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
+  /* ---------- Topbar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--bg) 92%, transparent);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 14px 16px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
+  .brand svg { width:20px; height:20px; }
+  .row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+
+  /* ---------- Pencarian ---------- */
+  .searchbar { margin-top: 8px; }
+  .search { position: relative; }
+  .search input {
+    width: 100%; padding: 14px 44px 14px 42px;
+    border-radius: 12px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); outline: none;
+    box-shadow: var(--shadow);
+  }
+  .search input:focus { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 30%, transparent); }
+  .search .icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity:.7;
+  }
+  .search .clear {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    border: 1px solid var(--border); background: var(--surface);
+    border-radius: 999px; width: 28px; height: 28px; display:grid; place-items:center; cursor: pointer;
+  }
+  .btn {
+    height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); cursor: pointer; display:inline-grid; place-items:center;
+    white-space: nowrap;
+  }
+  .btn.primary { background: var(--accent); border-color: color-mix(in oklab, var(--accent) 60%, var(--border)); color: #082a3a; font-weight:700; }
+  .btn.ghost { background: transparent; }
+  .btn.warn { background: var(--danger); border-color: color-mix(in oklab, var(--danger) 60%, var(--border)); color: #1b0b0b; }
+  .btn[disabled] { opacity:.5; cursor:not-allowed; }
+
+  /* ---------- Opsi lanjutan ---------- */
+  details { margin-top: 6px; background: var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow: var(--shadow); }
+  summary { padding: 12px 14px; list-style:none; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:8px; }
+  summary::-webkit-details-marker { display:none; }
+  .optgrid { padding: 0 14px 14px; display:grid; gap: 10px; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .field label { font-size:12px; color: var(--muted); }
+  .field input[type="number"], .field select { width: 100%; padding: 10px 12px; border-radius: 10px; border:1px solid var(--border); background: var(--card); color: var(--text); }
+  .switch { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background: var(--card); }
+  .switch input { transform: scale(1.15); }
+
+  /* ---------- Info pill ---------- */
+  .pills { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .pill { padding: 4px 10px; border:1px solid var(--border); border-radius:999px; color: var(--muted); font-size:12px; background: var(--surface); }
+
+  /* ---------- Konten Utama & Hasil ---------- */
+  main { padding: 14px 16px 24px; }
+  .main-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .data-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .results-title {
+    font-size: 1.1em;
+    font-weight: 700;
+    margin: 16px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .results-title:empty { display: none; }
+  
+  .grid { display:grid; gap:8px; grid-template-columns: 1fr; }
+  .card {
+    border:1px solid var(--border); border-radius:14px; background: var(--card); box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    transition: background-color .12s ease;
+    cursor: pointer;
+  }
+  .card:focus-within, .card:hover {
+    transform: none;
+    background: var(--surface);
+    box-shadow: 0 1px 1px rgba(0,0,0,.2), 0 6px 18px rgba(0,0,0,.25);
+  }
+  .browse-item-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .browse-item-main svg {
+    width: 20px;
+    height: 20px;
+    color: var(--muted);
+  }
+  .body { padding: 0; display:grid; gap:8px; flex-grow: 1; margin-right: 16px; overflow: hidden; }
+  .fname { font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .bibs { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { font: 600 12px/1.1 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; color: #001b1b; background: var(--accent-2); padding:6px 8px; border-radius:8px; }
+  .chip[data-dist="1"] { background:#ffd166; color:#2d1800; }
+  .meta { display:flex; gap:8px; align-items:center; flex-wrap:nowrap; }
+  .meta .btn, .meta a.btn { height: 38px; padding:0 12px; text-decoration: none; }
+  .meta a.btn { display: inline-grid; place-items:center; }
+  .empty, .alert { color: var(--danger); margin: 10px 0; }
+
+  /* ---------- Dialog pratinjau ---------- */
+  dialog.viewer::backdrop { background: rgba(0,0,0,.7); backdrop-filter: blur(2px); }
+  dialog.viewer { width:min(98vw, 1200px); border:1px solid var(--border); border-radius:12px; background: var(--surface); color: var(--text); padding:0; }
+  .v-head { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 12px; border-bottom:1px solid var(--border); }
+  .v-title { font-weight:700; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .v-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .v-body { position: relative; display: grid; place-items: center; background: #000; }
+  .v-body img, .v-body iframe { width:100%; height:80vh; max-height:80vh; object-fit:contain; border:0; }
+  .v-nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+    background: rgba(30, 30, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px; width: 48px; height: 48px; cursor: pointer;
+    display: grid; place-items: center; color: white;
+    transition: background-color .15s ease, opacity .2s ease;
+  }
+  .v-nav:hover { background: rgba(10, 10, 10, 0.8); }
+  .v-nav.prev { left: 16px; }
+  .v-nav.next { right: 16px; }
+  .v-nav svg { width: 32px; height: 32px; fill: currentColor; }
+  .v-nav[disabled] { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+  .v-foot { display: flex; justify-content: center; padding: 10px 12px; border-top:1px solid var(--border); }
+  .v-meta { font-size:12px; color: var(--muted); text-align:center; }
+
+  /* ---------- Tombol ke atas ---------- */
+  .to-top { position: fixed; right: 18px; bottom: 18px; z-index: 60; opacity: 0; pointer-events: none; transition: .2s; border-radius: 999px; border:1px solid var(--border); background: var(--surface); width:44px; height:44px; display:grid; place-items:center; box-shadow: var(--shadow); }
+  .to-top.show { opacity:1; pointer-events:auto; }
+
+  /* ========== OPTIMASI TAMPILAN ========== */
+  @media (min-width: 641px) {
+    .v-nav { opacity: 0; }
+    .v-body:hover .v-nav { opacity: 1; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .wrap { padding-left: 12px; padding-right: 12px; }
+    .main-toolbar { justify-content: center; }
+    .data-actions, #results-toolbar { justify-content: center; flex-grow: 1; }
+    .card { flex-direction: column; align-items: flex-start; gap: 12px; padding: 12px; }
+    .body { margin-right: 0; width: 100%; }
+    .meta { width: 100%; }
+    .v-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .v-title { font-size: 16px; }
+    .v-actions { width: 100%; justify-content: flex-end; }
+    .v-nav { width: 40px; height: 40px; }
+    .v-nav.prev { left: 8px; }
+    .v-nav.next { right: 8px; }
+    .v-nav svg { width: 28px; height: 28px; }
+    .to-top { bottom: 12px; right: 12px; }
+  }
+</style>
+</head>
+<body>
+    <div class="topbar">
+      <div class="wrap">
+        <div class="row">
+          <div class="brand" aria-label="Pencari Bib Pro">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>
+            <span>Pencari Bib <span style="opacity:.6">Pro</span></span>
+          </div>
+          <div class="toolbar">
+            <button id="themeToggle" class="btn ghost" title="Ganti tema gelap/terang" aria-label="Ganti tema">🌙</button>
+          </div>
+        </div>
+
+        <div class="searchbar" role="search">
+            <div class="search">
+              <span class="icon" aria-hidden="true">🔎</span>
+              <input id="bibInput" type="text" inputmode="numeric" autocomplete="off" placeholder="Cari nomor bib… (mis. 13405)" aria-label="Cari nomor bib" />
+              <button id="clearInput" class="clear" title="Bersihkan input" aria-label="Bersihkan">✕</button>
+            </div>
+        </div>
+  
+        <details id="advPanel">
+          <summary>⚙️ Opsi lanjutan</summary>
+          <div class="optgrid" role="group" aria-label="Opsi lanjutan">
+            <div class="field">
+              <label for="minDigits">Minimal digit untuk pencarian</label>
+              <input id="minDigits" type="number" min="1" step="1" value="2" />
+            </div>
+            <div class="field">
+              <label for="sortMode">Urutkan hasil</label>
+              <select id="sortMode">
+                <option value="best">Terbaik (jarak → kepercayaan → nama)</option>
+                <option value="conf">Kepercayaan tertinggi</option>
+                <option value="name">Nama file (A→Z)</option>
+              </select>
+            </div>
+            <div class="switch" title="Anggap 04 dan 4 setara saat pencocokan">
+              <input id="ignoreZeros" type="checkbox" checked />
+              <label for="ignoreZeros" style="margin:0;">Abaikan nol di depan</label>
+            </div>
+            <div class="switch" title="Wajibkan panjang bib kandidat sama dengan input">
+              <input id="sameLen" type="checkbox" />
+              <label for="sameLen" style="margin:0;">Wajibkan panjang sama</label>
+            </div>
+            <div class="switch" title="Hanya tampilkan kecocokan tepat (jarak 0)">
+              <input id="exactOnly" type="checkbox" />
+              <label for="exactOnly" style="margin:0;">Hanya cocok tepat</label>
+            </div>
+          </div>
+        </details>
+  
+        <div id="status" class="pill" aria-live="polite">Memuat dataset…</div>
+        <div class="pills">
+          <div class="pill" id="countPill">0 hasil</div>
+          <div class="pill" id="datasetPill">dataset: belum dimuat</div>
+          <div class="pill" id="cachePill">cache: —</div>
+          <div class="pill">aturan: ≤1 edit</div>
+        </div>
+      </div>
+    </div>
+  
+    <main class="wrap">
+      <div class="main-toolbar">
+          <div class="data-actions">
+              <label class="btn" title="Muat dataset dari berkas JSON (akan disimpan ke cache)">
+                  <input id="filePicker" type="file" accept=".json,application/json" hidden />
+                  Pilih JSON
+              </label>
+              <button id="browseBtn" class="btn">Browse Semua Bib</button>
+              <button id="clearCache" class="btn" title="Hapus dataset yang tersimpan di browser ini">Hapus cache</button>
+          </div>
+          <div id="results-toolbar" hidden>
+              <button id="exportCsv" class="btn" title="Ekspor hasil ke CSV">Ekspor CSV</button>
+          </div>
+      </div>
+
+      <h2 id="results-title" class="results-title"></h2>
+      
+      <p id="noData" class="alert">Belum ada dataset yang dimuat.</p>
+      <p id="noMatches" class="empty" hidden>Tidak ada hasil.</p>
+      <section id="grid" class="grid" aria-live="polite"></section>
+      <div id="sentinel" style="height:1px;"></div>
+    </main>
+  
+    <dialog id="viewer" class="viewer" aria-label="Pratinjau gambar ukuran penuh">
+      <div class="v-head">
+        <div class="v-title" id="viewerTitle">(judul)</div>
+        <div class="v-actions">
+          <a id="viewerOpenDrive" class="btn" target="_blank" rel="noopener noreferrer">Buka di Drive</a>
+          <a id="viewerDownload" class="btn primary" target="_blank" rel="noopener noreferrer">Unduh</a>
+          <button id="viewerClose" class="btn warn">Tutup</button>
+        </div>
+      </div>
+      <div class="v-body">
+        <img id="viewerImg" alt="pratinjau gambar" />
+        <iframe id="viewerIframe" class="" allow="autoplay; fullscreen" hidden></iframe>
+        <button id="prevBtn" class="v-nav prev" title="Sebelumnya (Panah Kiri)">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <button id="nextBtn" class="v-nav next" title="Berikutnya (Panah Kanan)">
+            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+        </button>
+      </div>
+      <div class="v-foot">
+        <div id="viewerMeta" class="v-meta"></div>
+      </div>
+    </dialog>
+  
+    <button id="toTop" class="to-top" title="Kembali ke atas" aria-label="Kembali ke atas">▲</button>
+<script>
+/* ===========================================================
+    Pencari Bib Pro — UI rapi, cepat, profesional (client-side)
+    =========================================================== */
+(() => {
+  // --- Elemen UI ---
+  const bibInput = document.getElementById('bibInput');
+  const clearInput = document.getElementById('clearInput');
+  const minDigits = document.getElementById('minDigits');
+  const ignoreZeros = document.getElementById('ignoreZeros');
+  const sameLen = document.getElementById('sameLen');
+  const exactOnly = document.getElementById('exactOnly');
+  const sortMode = document.getElementById('sortMode');
+  const filePicker = document.getElementById('filePicker');
+  const browseBtn = document.getElementById('browseBtn');
+  const exportCsv = document.getElementById('exportCsv');
+  const clearCache = document.getElementById('clearCache');
+  const themeToggle = document.getElementById('themeToggle');
+  const grid = document.getElementById('grid');
+  const sentinel = document.getElementById('sentinel');
+  const statusEl = document.getElementById('status');
+  const countPill = document.getElementById('countPill');
+  const datasetPill = document.getElementById('datasetPill');
+  const cachePill = document.getElementById('cachePill');
+  const noDataEl = document.getElementById('noData');
+  const noMatchesEl = document.getElementById('noMatches');
+  const toTop = document.getElementById('toTop');
+  const resultsToolbar = document.getElementById('results-toolbar');
+  const resultsTitle = document.getElementById('results-title');
+  // Dialog Viewer
+  const viewerDialog = document.getElementById('viewer');
+  const viewerBody = document.querySelector('.v-body');
+  const viewerTitle = document.getElementById('viewerTitle');
+  const viewerImg = document.getElementById('viewerImg');
+  const viewerIframe = document.getElementById('viewerIframe');
+  const viewerMeta = document.getElementById('viewerMeta');
+  const viewerOpenDrv = document.getElementById('viewerOpenDrive');
+  const viewerDownload = document.getElementById('viewerDownload');
+  const viewerClose = document.getElementById('viewerClose');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  // --- State & Penyimpanan ---
+  const DB_NAME = 'bib-finder-cache';
+  const DB_STORE = 'datasets';
+  const DB_KEY = 'active';
+  let idb = null;
+
+  const PREF_KEY = 'bibFinderPrefs';
+  const prefs = loadPrefs();
+  applyPrefs();
+
+  function loadPrefs() {
+    try { const raw = localStorage.getItem(PREF_KEY); return raw ? JSON.parse(raw) : {}; }
+    catch { return {}; }
+  }
+
+  function savePrefs() {
+    try {
+      const p = {
+        theme: document.documentElement.getAttribute('data-theme') || 'dark',
+        minDigits: parseInt(minDigits.value || '2', 10),
+        ignoreZeros: ignoreZeros.checked,
+        sameLen: sameLen.checked,
+        exactOnly: exactOnly.checked,
+        sortMode: sortMode.value
+      };
+      localStorage.setItem(PREF_KEY, JSON.stringify(p));
+    } catch {}
+  }
+
+  function applyPrefs() {
+    if (prefs.theme) document.documentElement.setAttribute('data-theme', prefs.theme);
+    if (typeof prefs.minDigits === 'number') minDigits.value = prefs.minDigits;
+    if (typeof prefs.ignoreZeros === 'boolean') ignoreZeros.checked = prefs.ignoreZeros;
+    if (typeof prefs.sameLen === 'boolean') sameLen.checked = prefs.sameLen;
+    if (typeof prefs.exactOnly === 'boolean') exactOnly.checked = prefs.exactOnly;
+    if (typeof prefs.sortMode === 'string') sortMode.value = prefs.sortMode;
+    themeToggle.textContent = (document.documentElement.getAttribute('data-theme') === 'light') ? '☀️' : '🌙';
+  }
+
+  async function idbOpen() {
+    return new Promise((resolve) => {
+      if (!('indexedDB' in window)) return resolve(null);
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(DB_STORE)) db.createObjectStore(DB_STORE, { keyPath: 'key' });
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(null);
+    });
+  }
+
+  async function cachePut(payload) {
+    const entry = { key: DB_KEY, ts: Date.now(), ...payload };
+    if (idb) {
+      try {
+        await new Promise((resolve, reject) => {
+          const tx = idb.transaction(DB_STORE, 'readwrite');
+          tx.oncomplete = resolve; tx.onerror = () => reject(tx.error);
+          tx.objectStore(DB_STORE).put(entry);
+        });
+        cachePill.textContent = `cache: disimpan (${new Date(entry.ts).toLocaleString()})`;
+        return true;
+      } catch {}
+    }
+    try {
+      localStorage.setItem('bibFinderCache', JSON.stringify(entry));
+      cachePill.textContent = `cache: disimpan (localStorage)`; return true;
+    } catch {
+      cachePill.textContent = `cache: gagal menyimpan`; return false;
+    }
+  }
+
+  async function cacheGet() {
+    if (idb) {
+      try {
+        const result = await new Promise((resolve) => {
+          const tx = idb.transaction(DB_STORE, 'readonly');
+          tx.onerror = () => resolve(null);
+          const req = tx.objectStore(DB_STORE).get(DB_KEY);
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => resolve(null);
+        });
+        if (result) return result;
+      } catch {}
+    }
+    try { const raw = localStorage.getItem('bibFinderCache'); return raw ? JSON.parse(raw) : null; }
+    catch { return null; }
+  }
+
+  async function cacheClear() {
+    let ok = false;
+    if (idb) {
+      try {
+        await new Promise((resolve) => {
+          const tx = idb.transaction(DB_STORE, 'readwrite');
+          tx.oncomplete = resolve; tx.onerror = () => resolve();
+          tx.objectStore(DB_STORE).delete(DB_KEY);
+        });
+        ok = true;
+      } catch {}
+    }
+    try { localStorage.removeItem('bibFinderCache'); ok = true; } catch {}
+    cachePill.textContent = ok ? 'cache: dihapus' : 'cache: gagal dihapus';
+  }
+
+  let DATA = [];
+  let BROWSE_INDEX = new Map();
+  let LAST_RESULTS = [];
+  let LAST_QUERY_DIGITS = '';
+  let CURRENT_INDEX = -1;
+  const RENDER_BATCH = 100;
+  let renderedCount = 0;
+  let touchStartX = 0, touchEndX = 0;
+  const SWIPE_THRESHOLD = 50;
+
+  (async function boot() {
+    idb = await idbOpen();
+    cachePill.textContent = idb ? 'cache: siap' : 'cache: cadangan localStorage';
+    try {
+      setStatus('Mengambil ./bib_export.json …');
+      const res = await fetch('./bib_export.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      ingest(json, 'bib_export.json');
+      await cachePut({ label: 'bib_export.json', data: json });
+      setStatus('Berhasil dimuat dari file dan disimpan ke cache. Ketik untuk mencari.');
+    } catch (e) {
+      setStatus('Gagal mengambil file; mencoba dataset yang tersimpan…');
+      const cached = await cacheGet();
+      if (cached?.data && Array.isArray(cached.data)) {
+        ingest(cached.data, cached.label || 'cache');
+        setStatus('Dimuat dari cache. Ketik untuk mencari.');
+      } else {
+        setStatus('Tidak ada dataset. Pilih berkas JSON untuk memuat.');
+        noDataEl.hidden = false;
+      }
+    }
+  })();
+
+  function ingest(json, label = 'dataset') {
+    if (!Array.isArray(json)) { setStatus('Root JSON harus berupa array objek.', true); return; }
+    DATA = json.map(item => ({
+      file_id: item.file_id ?? null, file_name: item.file_name ?? '', web_view_link: item.web_view_link ?? null,
+      bib_numbers: Array.isArray(item.bib_numbers) ? item.bib_numbers.filter(x => typeof x === 'string' || typeof x === 'number').map(String) : [],
+      confidences: Array.isArray(item.confidences) ? item.confidences : []
+    }));
+    datasetPill.textContent = `dataset: ${label} (${DATA.length} foto)`;
+    noDataEl.hidden = true;
+    
+    setStatus('Mengindeks data untuk browse...');
+    BROWSE_INDEX.clear();
+    for (const rec of DATA) {
+      const seenInThisRecord = new Set();
+      for (const bib of rec.bib_numbers) {
+        const cleanBib = digitsOnly(bib);
+        if (cleanBib && !seenInThisRecord.has(cleanBib)) {
+          BROWSE_INDEX.set(cleanBib, (BROWSE_INDEX.get(cleanBib) || 0) + 1);
+          seenInThisRecord.add(cleanBib);
+        }
+      }
+    }
+    setStatus('');
+    refresh();
+  }
+
+  const digitsOnly = s => (s ?? '').toString().replace(/\D+/g, '');
+  const stripLeadingZeros = s => {
+    const raw = digitsOnly(s);
+    if (raw === '') return '';
+    const t = raw.replace(/^0+/, '');
+    return t === '' ? '0' : t;
+  };
+
+  function isWithinOneEdit(a, b) {
+    if (a === b) return { ok: true, dist: 0 };
+    const la = a.length, lb = b.length;
+    if (Math.abs(la - lb) > 1) return { ok: false, dist: 2 };
+    if (la === lb) {
+      let mismatches = 0;
+      for (let i = 0; i < la; i++) { if (a[i] !== b[i] && ++mismatches > 1) return { ok: false, dist: 2 }; }
+      return { ok: true, dist: 1 };
+    }
+    let i = 0, j = 0, skips = 0;
+    const long = la > lb ? a : b, short = la > lb ? b : a;
+    while (i < long.length && j < short.length) {
+      if (long[i] === short[j]) { i++; j++; } 
+      else { if (++skips > 1) return { ok: false, dist: 2 }; i++; }
+    }
+    const dist = skips + ((long.length - i) > 0 ? 1 : 0);
+    return { ok: dist <= 1, dist };
+  }
+
+  function bestDistance(user, cand, ignoreZerosFlag) {
+    const a1 = digitsOnly(user), b1 = digitsOnly(cand);
+    const a2 = stripLeadingZeros(user), b2 = stripLeadingZeros(cand);
+    let best = { ok: false, dist: 2 };
+    const tryPair = (x, y) => { const r = isWithinOneEdit(x, y); if (r.dist < best.dist) best = r; };
+    tryPair(a1, b1);
+    if (ignoreZerosFlag) tryPair(a2, b2);
+    return best;
+  }
+
+  const driveDirectImg = (fileId) => fileId ? `https://drive.google.com/uc?export=view&id=${encodeURIComponent(fileId)}` : null;
+  const drivePreviewUrl = (fileId, webViewLink) => {
+    if (fileId) return `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/preview`;
+    if (webViewLink) {
+      const m = webViewLink.match(/\/d\/([^/]+)/);
+      if (m) return `https://drive.google.com/file/d/${encodeURIComponent(m[1])}/preview`;
+    }
+    return null;
+  };
+
+  function refresh() {
+    const raw = digitsOnly(bibInput.value);
+    const minLen = Math.max(1, parseInt(minDigits.value || '1', 10));
+
+    grid.innerHTML = '';
+    noMatchesEl.hidden = true;
+    resultsTitle.textContent = '';
+    renderedCount = 0;
+    LAST_RESULTS = [];
+    LAST_QUERY_DIGITS = raw || '';
+    resultsToolbar.hidden = true;
+
+    if (DATA.length === 0) {
+      noDataEl.hidden = false;
+      countPill.textContent = '0 hasil';
+      return;
+    }
+    noDataEl.hidden = true;
+
+    if (!raw || raw.length < minLen) {
+      countPill.textContent = '0 hasil';
+      setStatus(`Masukkan minimal ${minLen} digit untuk mencari.`);
+      return;
+    }
+
+    resultsTitle.textContent = `Hasil Pencarian untuk "${raw}"`;
+    const results = [];
+    const requireSameLen = sameLen.checked;
+    const requireExact = exactOnly.checked;
+
+    for (const rec of DATA) {
+      if (!rec || !Array.isArray(rec.bib_numbers) || rec.bib_numbers.length === 0) continue;
+      const matches = [];
+      for (let idx = 0; idx < rec.bib_numbers.length; idx++) {
+        const candidate = String(rec.bib_numbers[idx] ?? '');
+        const candDigits = digitsOnly(candidate);
+        if (!candDigits || (requireSameLen && candDigits.length !== raw.length)) continue;
+        const d = bestDistance(raw, candDigits, ignoreZeros.checked);
+        if (requireExact ? (d.ok && d.dist === 0) : (d.ok && d.dist <= 1)) {
+          const conf = Array.isArray(rec.confidences) ? rec.confidences[idx] ?? null : null;
+          matches.push({ bib: candidate, dist: d.dist, conf });
+        }
+      }
+      if (matches.length) {
+        matches.sort((a, b) => (a.dist - b.dist) || ((b.conf ?? -1) - (a.conf ?? -1)));
+        results.push({ rec, matches, bestDist: matches[0].dist, bestConf: matches[0].conf ?? -1 });
+      }
+    }
+
+    if (sortMode.value === 'conf') {
+      results.sort((A, B) => (B.bestConf - A.bestConf) || (A.bestDist - B.bestDist) || String(A.rec.file_name).localeCompare(String(B.rec.file_name)));
+    } else if (sortMode.value === 'name') {
+      results.sort((A, B) => String(A.rec.file_name).localeCompare(String(B.rec.file_name)) || (A.bestDist - B.bestDist) || (B.bestConf - A.bestConf));
+    } else {
+      results.sort((A, B) => (A.bestDist - B.bestDist) || (B.bestConf - A.bestConf) || String(A.rec.file_name).localeCompare(String(B.rec.file_name)));
+    }
+
+    LAST_RESULTS = results;
+    countPill.textContent = `${results.length} hasil`;
+    if (results.length === 0) {
+      noMatchesEl.hidden = false;
+      return;
+    }
+    resultsToolbar.hidden = false;
+    renderMore(buildCard);
+    setupObserver(buildCard);
+  }
+  
+  function buildCard(item, idx) {
+    const { rec, matches } = item;
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.tabIndex = 0;
+    
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) {
+        return;
+      }
+      openPreview(idx);
+    });
+    
+    const body = document.createElement('div');
+    body.className = 'body';
+    const title = document.createElement('div');
+    title.className = 'fname';
+    title.textContent = rec.file_name || '(tanpa nama berkas)';
+    body.appendChild(title);
+    const bibsRow = document.createElement('div');
+    bibsRow.className = 'bibs';
+    matches.slice(0, 6).forEach(m => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.dataset.dist = String(m.dist);
+      chip.title = (m.conf != null) ? `Jarak: ${m.dist} | Kepercayaan: ${m.conf}` : `Jarak: ${m.dist}`;
+      chip.textContent = m.bib;
+      bibsRow.appendChild(chip);
+    });
+    body.appendChild(bibsRow);
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+
+    if (rec.web_view_link) {
+      const link = document.createElement('a');
+      link.href = rec.web_view_link;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = 'Buka di Drive';
+      link.classList.add('btn');
+      meta.appendChild(link);
+    }
+    card.appendChild(body);
+    card.appendChild(meta);
+    return card;
+  }
+
+  function browseAll() {
+    if (DATA.length === 0) {
+      setStatus('Muat dataset terlebih dahulu untuk browse.', true, true);
+      return;
+    }
+    grid.innerHTML = '';
+    bibInput.value = '';
+    noMatchesEl.hidden = true;
+    resultsToolbar.hidden = true;
+    renderedCount = 0;
+    const minLen = Math.max(1, parseInt(minDigits.value || '1', 10));
+
+    setStatus('Memfilter indeks...');
+    setTimeout(() => {
+        const filteredBibs = [];
+        for (const [bib, count] of BROWSE_INDEX.entries()) {
+            if (bib.length >= minLen) {
+                filteredBibs.push({ bib, count });
+            }
+        }
+        
+        LAST_RESULTS = filteredBibs.sort((a, b) => a.bib - b.bib);
+        
+        countPill.textContent = `Menampilkan ${LAST_RESULTS.length} bib terindeks`;
+        resultsTitle.textContent = 'Indeks Semua Nomor Bib';
+        setStatus('');
+        
+        if (LAST_RESULTS.length === 0) {
+            noMatchesEl.textContent = `Tidak ada bib dengan minimal ${minLen} digit.`;
+            noMatchesEl.hidden = false;
+            return;
+        }
+
+        renderMore(buildBrowseCard);
+        setupObserver(buildBrowseCard);
+    }, 10);
+  }
+
+  function buildBrowseCard(item, idx) {
+    const { bib, count } = item;
+    const card = document.createElement('article');
+    card.className = 'card browse-item';
+    card.tabIndex = 0;
+    
+    const main = document.createElement('div');
+    main.className = 'browse-item-main';
+    const icon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>`;
+    main.innerHTML = icon + `<span>${bib}</span>`;
+
+    const countChip = document.createElement('span');
+    countChip.className = 'chip';
+    countChip.style.backgroundColor = 'var(--muted)';
+    countChip.style.color = 'var(--bg)';
+    countChip.textContent = `${count} foto`;
+    countChip.title = `Nomor bib ${bib} ditemukan di ${count} foto`;
+    
+    card.appendChild(main);
+    card.appendChild(countChip);
+
+    card.addEventListener('click', () => {
+        bibInput.value = bib;
+        refresh();
+    });
+    return card;
+  }
+  
+  function renderMore(builderFn) {
+    const frag = document.createDocumentFragment();
+    const end = Math.min(renderedCount + RENDER_BATCH, LAST_RESULTS.length);
+    for (let i = renderedCount; i < end; i++) {
+      frag.appendChild(builderFn(LAST_RESULTS[i], i));
+    }
+    grid.appendChild(frag);
+    renderedCount = end;
+  }
+
+  let observer = null;
+  function setupObserver(builderFn) {
+    observer?.disconnect?.();
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && renderedCount < LAST_RESULTS.length) {
+          renderMore(builderFn);
+        }
+      });
+    });
+    observer.observe(sentinel);
+  }
+
+  function openPreview(idx) {
+    if (!LAST_RESULTS.length || typeof LAST_RESULTS[idx] !== 'object') return;
+    CURRENT_INDEX = Math.min(Math.max(idx, 0), LAST_RESULTS.length - 1);
+    updateViewer();
+    if (typeof viewerDialog.showModal === 'function') {
+      viewerDialog.showModal();
+    } else {
+      viewerDialog.setAttribute('open', '');
+      document.documentElement.style.overflow = 'hidden';
+    }
+    document.addEventListener('keydown', onViewerKey);
+    viewerBody.addEventListener('touchstart', handleTouchStart, { passive: true });
+    viewerBody.addEventListener('touchmove', handleTouchMove, { passive: true });
+    viewerBody.addEventListener('touchend', handleTouchEnd);
+  }
+
+  function closePreview() {
+    viewerImg.src = '';
+    viewerIframe.src = '';
+    if (typeof viewerDialog.close === 'function') {
+      viewerDialog.close();
+    } else {
+      viewerDialog.removeAttribute('open');
+      document.documentElement.style.overflow = '';
+    }
+    document.removeEventListener('keydown', onViewerKey);
+    viewerBody.removeEventListener('touchstart', handleTouchStart);
+    viewerBody.removeEventListener('touchmove', handleTouchMove);
+    viewerBody.removeEventListener('touchend', handleTouchEnd);
+  }
+
+  function handleTouchStart(e) { touchStartX = e.changedTouches[0].screenX; }
+  function handleTouchMove(e) { touchEndX = e.changedTouches[0].screenX; }
+  function handleTouchEnd() {
+    const deltaX = touchEndX - touchStartX;
+    if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+        if (deltaX < 0) movePreview(1);
+        else movePreview(-1);
+    }
+    touchStartX = 0;
+    touchEndX = 0;
+  }
+
+  function onViewerKey(e) {
+    if (e.key === 'Escape') { e.preventDefault(); closePreview(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); movePreview(-1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); movePreview(1); }
+  }
+
+  function movePreview(delta) {
+    const next = CURRENT_INDEX + delta;
+    if (next < 0 || next >= LAST_RESULTS.length) return;
+    CURRENT_INDEX = next;
+    updateViewer();
+  }
+
+  function updateViewer() {
+    const item = LAST_RESULTS[CURRENT_INDEX];
+    if (!item) return;
+    const { rec, matches } = item;
+    const imgUrl = driveDirectImg(rec.file_id);
+    const prevUrl = drivePreviewUrl(rec.file_id, rec.web_view_link);
+    viewerTitle.textContent = rec.file_name || '(tanpa nama berkas)';
+    const topBibs = matches.slice(0, 5).map(m => `${m.bib}${m.dist === 0 ? ' (cocok)' : ''}`).join(', ');
+    viewerMeta.textContent = topBibs ? `Kecocokan: ${topBibs}` : '';
+
+    if (rec.web_view_link) { viewerOpenDrv.classList.remove('hidden'); viewerOpenDrv.href = rec.web_view_link; } 
+    else { viewerOpenDrv.classList.add('hidden'); viewerOpenDrv.removeAttribute('href'); }
+
+    if (imgUrl) { viewerDownload.classList.remove('hidden'); viewerDownload.href = imgUrl; } 
+    else { viewerDownload.classList.add('hidden'); viewerDownload.removeAttribute('href'); }
+
+    if (prevUrl) {
+        viewerIframe.hidden = false; viewerImg.hidden = true;
+        viewerIframe.src = prevUrl;
+    } else if (imgUrl) {
+        viewerImg.hidden = false; viewerIframe.hidden = true;
+        viewerImg.src = imgUrl;
+    } else {
+        viewerImg.hidden = false; viewerIframe.hidden = true;
+        viewerImg.src = ''; viewerImg.alt = 'Pratinjau tidak tersedia';
+    }
+    prevBtn.disabled = CURRENT_INDEX <= 0;
+    nextBtn.disabled = CURRENT_INDEX >= (LAST_RESULTS.length - 1);
+  }
+
+  viewerClose.addEventListener('click', closePreview);
+  prevBtn.addEventListener('click', () => movePreview(-1));
+  nextBtn.addEventListener('click', () => movePreview(1));
+
+  let t = null;
+  const trigger = () => { clearTimeout(t); t = setTimeout(() => { savePrefs(); refresh(); }, 90); };
+
+  bibInput.addEventListener('input', trigger);
+  minDigits.addEventListener('input', trigger);
+  ignoreZeros.addEventListener('change', trigger);
+  sameLen.addEventListener('change', trigger);
+  exactOnly.addEventListener('change', trigger);
+  sortMode.addEventListener('change', trigger);
+  clearInput.addEventListener('click', () => { bibInput.value = ''; trigger(); bibInput.focus(); });
+
+  filePicker.addEventListener('change', async (ev) => {
+    const file = ev.target.files?.[0]; if (!file) return;
+    try {
+      setStatus(`Membaca ${file.name}…`);
+      const text = await file.text();
+      const json = JSON.parse(text);
+      ingest(json, file.name);
+      await cachePut({ label: file.name, data: json });
+      setStatus(`Berhasil memuat ${file.name} dan menyimpannya ke cache. Ketik untuk mencari.`);
+    } catch (e) {
+      setStatus(`Gagal membaca berkas JSON: ${e.message}`, true);
+    } finally {
+      ev.target.value = '';
+    }
+  });
+
+  browseBtn.addEventListener('click', browseAll);
+  clearCache.addEventListener('click', async () => { await cacheClear(); });
+  themeToggle.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    themeToggle.textContent = next === 'light' ? '☀️' : '🌙';
+    savePrefs();
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) toTop.classList.add('show');
+    else toTop.classList.remove('show');
+  });
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  let statusTimer = null;
+  function setStatus(msg, isError = false, transient = false) {
+    statusEl.textContent = msg;
+    statusEl.style.color = isError ? 'var(--danger)' : 'var(--muted)';
+    if (transient) {
+      clearTimeout(statusTimer);
+      statusTimer = setTimeout(() => { statusEl.textContent = ''; }, 1500);
+    }
+  }
+})();
+</script>
+</body>
+</html>
+
+
