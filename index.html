@@ -1074,7 +1074,7 @@
     align-items: center;
     justify-content: center;
     transition: all var(--transition-fast);
-    opacity: 0;
+    opacity: 1; /* Always visible */
   }
 
   .viewer-nav:hover {
@@ -1094,10 +1094,6 @@
     opacity: 0.3;
     cursor: not-allowed;
     pointer-events: none;
-  }
-
-  .viewer-body:hover .viewer-nav {
-    opacity: 1;
   }
 
   .viewer-footer {
