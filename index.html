@@ -6,333 +6,1299 @@
 <title>Pencari Bib Pro — cepat, rapi, profesional</title>
 <meta name="color-scheme" content="dark light">
 <style>
-  /* ---------- Tema & tipografi ---------- */
+  /* ========== DESIGN SYSTEM ========== */
   :root {
-    --bg: #0b0c10;
-    --surface: #101218;
-    --card: #111319;
-    --muted: #9aa4af;
-    --text: #e8eaed;
-    --accent: #4fc3f7;
-    --accent-2: #64ffda;
-    --danger: #ff6b6b;
-    --ok: #42be65;
-    --border: #202434;
-    --ring: #6ee7ff;
-    --shadow: 0 1px 1px rgba(0,0,0,.2), 0 6px 18px rgba(0,0,0,.25);
-  }
-  [data-theme="light"] {
-    --bg: #f6f7fb;
-    --surface: #ffffff;
-    --card: #ffffff;
-    --muted: #5b6570;
-    --text: #0f1720;
-    --accent: #0078d4;
-    --accent-2: #00b894;
-    --danger: #d83a3a;
-    --ok: #107c41;
-    --border: #e6e8ef;
-    --ring: #66c7ff;
-    --shadow: 0 1px 1px rgba(0,0,0,.05), 0 8px 22px rgba(0,0,0,.08);
-  }
-  html, body { height: 100%; }
-  body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font: 16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+    /* Dark Theme */
+    --bg-primary: #0a0b0f;
+    --bg-secondary: #0f1118;
+    --bg-tertiary: #161720;
+    --surface-primary: #1a1d29;
+    --surface-secondary: #232633;
+    --surface-hover: #2a2d3a;
+    
+    --text-primary: #e8eaed;
+    --text-secondary: #a8adb8;
+    --text-muted: #6b7280;
+    --text-inverse: #0f1720;
+    
+    --accent-primary: #3b82f6;
+    --accent-secondary: #06b6d4;
+    --accent-hover: #2563eb;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    
+    --border-primary: #374151;
+    --border-secondary: #4b5563;
+    --border-focus: #60a5fa;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+    
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 30px;
+    
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow: 350ms ease;
   }
 
-  /* Aturan Box-sizing Universal untuk Layout yang Konsisten */
-  html {
+  [data-theme="light"] {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --surface-primary: #ffffff;
+    --surface-secondary: #f8fafc;
+    --surface-hover: #f1f5f9;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --text-inverse: #ffffff;
+    
+    --accent-primary: #3b82f6;
+    --accent-secondary: #06b6d4;
+    --accent-hover: #2563eb;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    
+    --border-primary: #e2e8f0;
+    --border-secondary: #cbd5e1;
+    --border-focus: #60a5fa;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* ========== BASE STYLES ========== */
+  * {
     box-sizing: border-box;
   }
-  *, *::before, *::after {
-    box-sizing: inherit;
+
+  html {
+    scroll-behavior: smooth;
   }
 
-  /* ---------- Topbar ---------- */
-  .topbar {
-    position: sticky; top: 0; z-index: 50;
-    background: color-mix(in oklab, var(--bg) 92%, transparent);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(8px);
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
   }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 14px 16px; }
-  .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
-  .brand svg { width:20px; height:20px; }
-  .row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
 
-  /* ---------- Pencarian ---------- */
-  .searchbar { margin-top: 8px; }
-  .search { position: relative; }
-  .search input {
-    width: 100%; padding: 14px 44px 14px 42px;
-    border-radius: 12px; border: 1px solid var(--border);
-    background: var(--surface); color: var(--text); outline: none;
-    box-shadow: var(--shadow);
+  /* ========== HEADER & NAVIGATION ========== */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(26, 29, 41, 0.95);
+    backdrop-filter: blur(12px) saturate(180%);
+    border-bottom: 1px solid var(--border-primary);
+    transition: all var(--transition-normal);
   }
-  .search input:focus { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 30%, transparent); }
-  .search .icon {
-    position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity:.7;
-  }
-  .search .clear {
-    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    border: 1px solid var(--border); background: var(--surface);
-    border-radius: 999px; width: 28px; height: 28px; display:grid; place-items:center; cursor: pointer;
-  }
-  .btn {
-    height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--border);
-    background: var(--surface); color: var(--text); cursor: pointer; display:inline-grid; place-items:center;
-    white-space: nowrap;
-  }
-  .btn.primary { background: var(--accent); border-color: color-mix(in oklab, var(--accent) 60%, var(--border)); color: #082a3a; font-weight:700; }
-  .btn.ghost { background: transparent; }
-  .btn.warn { background: var(--danger); border-color: color-mix(in oklab, var(--danger) 60%, var(--border)); color: #1b0b0b; }
-  .btn[disabled] { opacity:.5; cursor:not-allowed; }
 
-  /* ---------- Opsi lanjutan (DIPERBAIKI) ---------- */
-  details { margin-top: 6px; background: var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow: var(--shadow); }
-  summary { padding: 12px 14px; list-style:none; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:8px; }
-  summary::-webkit-details-marker { display:none; }
-  .optgrid {
-    padding: 0 14px 14px;
-    display: grid;
-    gap: 12px;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    align-items: end;
+  [data-theme="light"] .header {
+    background: rgba(255, 255, 255, 0.95);
   }
-  .field { display:flex; flex-direction:column; gap:6px; }
-  .field label { font-size:12px; color: var(--muted); }
-  .field input[type="number"], .field select { width: 100%; padding: 10px 12px; border-radius: 10px; border:1px solid var(--border); background: var(--card); color: var(--text); }
-  .switch { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background: var(--card); height: 46px; }
-  .switch input { transform: scale(1.15); }
 
-  /* ---------- Info pill ---------- */
-  .pills { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-  .pill { padding: 4px 10px; border:1px solid var(--border); border-radius:999px; color: var(--muted); font-size:12px; background: var(--surface); }
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
 
-  /* ---------- Konten Utama & Hasil ---------- */
-  main { padding: 14px 16px 24px; }
-  .main-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .data-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .results-title {
-    font-size: 1.1em;
-    font-weight: 700;
-    margin: 16px 0 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-  }
-  .results-title:empty { display: none; }
-  
-  .grid { display:grid; gap:8px; grid-template-columns: 1fr; }
-  .card {
-    border:1px solid var(--border); border-radius:14px; background: var(--card); box-shadow: var(--shadow);
+  .header-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 16px;
-    transition: background-color .12s ease;
+    margin-bottom: var(--spacing-md);
+    transition: all var(--transition-normal);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-weight: 800;
+    font-size: var(--font-size-xl);
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+  }
+
+  .brand-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all var(--transition-normal);
+  }
+
+  .brand-text .pro {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  /* ========== COMPACT HEADER STYLES ========== */
+  .header.compact .header-top {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .header.compact .brand {
+    font-size: var(--font-size-lg);
+  }
+
+  .header.compact .brand-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .header.compact .search-section {
+    padding: var(--spacing-sm) 0 0 0;
+    margin-bottom: 0;
+  }
+
+  .header.compact .search-input {
+    height: 44px;
+    font-size: var(--font-size-base);
+  }
+
+  .header.compact .advanced-panel,
+  .header.compact .status-section {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ========== SEARCH SECTION ========== */
+  .search-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+  }
+
+  .search-container {
+    position: relative;
+    margin-bottom: var(--spacing-md);
+    transition: all var(--transition-normal);
+  }
+
+  .header.compact .search-container {
+    margin-bottom: 0;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    color: var(--text-muted);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    height: 56px;
+    padding: 0 56px 0 48px;
+    background: var(--surface-primary);
+    border: 2px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    outline: none;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .search-input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  .search-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .clear-button {
+    position: absolute;
+    right: var(--spacing-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
     cursor: pointer;
-  }
-  .card:focus-within, .card:hover {
-    transform: none;
-    background: var(--surface);
-    box-shadow: 0 1px 1px rgba(0,0,0,.2), 0 6px 18px rgba(0,0,0,.25);
-  }
-  .browse-item-main {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    opacity: 0;
+    visibility: hidden;
   }
-  .browse-item-main svg {
+
+  .clear-button.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .clear-button:hover {
+    background: var(--surface-hover);
+    color: var(--text-secondary);
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  /* ========== ADVANCED OPTIONS ========== */
+  .advanced-panel {
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    background: var(--surface-primary);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .advanced-summary {
+    padding: var(--spacing-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+    user-select: none;
+  }
+
+  .advanced-summary:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+
+  .advanced-icon {
+    transition: transform var(--transition-fast);
+  }
+
+  .advanced-panel[open] .advanced-icon {
+    transform: rotate(180deg);
+  }
+
+  .advanced-content {
+    padding: 0 var(--spacing-md) var(--spacing-md);
+    border-top: 1px solid var(--border-primary);
+    background: var(--bg-tertiary);
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+  }
+
+  .option-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .option-group-title {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .form-label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .form-input,
+  .form-select {
+    height: 44px;
+    padding: 0 var(--spacing-md);
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+  }
+
+  .form-input:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  .switch-field {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .switch-field:hover {
+    background: var(--surface-hover);
+  }
+
+  .switch-input {
     width: 20px;
     height: 20px;
-    color: var(--muted);
+    accent-color: var(--accent-primary);
   }
-  .body { padding: 0; display:grid; gap:8px; flex-grow: 1; margin-right: 16px; overflow: hidden; }
-  .fname { font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .bibs { display:flex; flex-wrap:wrap; gap:6px; }
-  .chip { font: 600 12px/1.1 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; color: #001b1b; background: var(--accent-2); padding:6px 8px; border-radius:8px; }
-  .chip[data-dist="1"] { background:#ffd166; color:#2d1800; }
-  .meta { display:flex; gap:8px; align-items:center; flex-wrap:nowrap; }
-  .meta .btn, .meta a.btn { height: 38px; padding:0 12px; text-decoration: none; }
-  .meta a.btn { display: inline-grid; place-items:center; }
-  .empty, .alert { color: var(--danger); margin: 10px 0; }
 
-  /* ---------- Dialog pratinjau ---------- */
-  dialog.viewer::backdrop { background: rgba(0,0,0,.7); backdrop-filter: blur(2px); }
-  dialog.viewer { width:min(98vw, 1200px); border:1px solid var(--border); border-radius:12px; background: var(--surface); color: var(--text); padding:0; }
-  .v-head { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 12px; border-bottom:1px solid var(--border); }
-  .v-title { font-weight:700; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .v-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-  .v-body { position: relative; display: grid; place-items: center; background: #000; }
-  .v-body img, .v-body iframe { width:100%; height:80vh; max-height:80vh; object-fit:contain; border:0; }
-  .v-nav {
-    position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
-    background: rgba(30, 30, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 999px; width: 48px; height: 48px; cursor: pointer;
-    display: grid; place-items: center; color: white;
-    transition: background-color .15s ease, opacity .2s ease;
+  .switch-label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    flex: 1;
   }
-  .v-nav:hover { background: rgba(10, 10, 10, 0.8); }
-  .v-nav.prev { left: 16px; }
-  .v-nav.next { right: 16px; }
-  .v-nav svg { width: 32px; height: 32px; fill: currentColor; }
-  .v-nav[disabled] { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
-  .v-foot { display: flex; justify-content: center; padding: 10px 12px; border-top:1px solid var(--border); }
-  .v-meta { font-size:12px; color: var(--muted); text-align:center; }
 
-  /* ---------- Tombol ke atas ---------- */
-  .to-top { position: fixed; right: 18px; bottom: 18px; z-index: 60; opacity: 0; pointer-events: none; transition: .2s; border-radius: 999px; border:1px solid var(--border); background: var(--surface); width:44px; height:44px; display:grid; place-items:center; box-shadow: var(--shadow); }
-  .to-top.show { opacity:1; pointer-events:auto; }
-
-  /* ========== OPTIMASI TAMPILAN ========== */
-  @media (min-width: 641px) {
-    .v-nav { opacity: 0; }
-    .v-body:hover .v-nav { opacity: 1; }
+  /* ========== BUTTONS ========== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    height: 44px;
+    padding: 0 var(--spacing-md);
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    user-select: none;
   }
-  @media (max-width: 640px) {
-    body { font-size: 15px; }
-    .wrap { padding-left: 12px; padding-right: 12px; }
-    .main-toolbar { justify-content: center; }
-    .data-actions, #results-toolbar { justify-content: center; flex-grow: 1; }
-    .card { flex-direction: column; align-items: flex-start; gap: 12px; padding: 12px; }
-    .body { margin-right: 0; width: 100%; }
-    .meta { width: 100%; }
-    .v-head { flex-direction: column; align-items: flex-start; gap: 12px; }
-    .v-title { font-size: 16px; }
-    .v-actions { width: 100%; justify-content: flex-end; }
-    .v-nav { width: 40px; height: 40px; }
-    .v-nav.prev { left: 8px; }
-    .v-nav.next { right: 8px; }
-    .v-nav svg { width: 28px; height: 28px; }
-    .to-top { bottom: 12px; right: 12px; }
+
+  .btn:hover {
+    background: var(--surface-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn.primary {
+    background: var(--accent-primary);
+    color: var(--text-inverse);
+    border-color: var(--accent-primary);
+  }
+
+  .btn.primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .btn.secondary {
+    background: var(--accent-secondary);
+    color: var(--text-inverse);
+    border-color: var(--accent-secondary);
+  }
+
+  .btn.ghost {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .btn.danger {
+    background: var(--danger);
+    color: var(--text-inverse);
+    border-color: var(--danger);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* ========== STATUS & PILLS ========== */
+  .status-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    transition: all var(--transition-normal);
+  }
+
+  .status-message {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .status-pills {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .pill.primary {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--accent-primary);
+    border-color: rgba(59, 130, 246, 0.2);
+  }
+
+  .pill.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+
+  /* ========== MAIN CONTENT ========== */
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg) var(--spacing-2xl);
+  }
+
+  .main-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+  }
+
+  .toolbar-section {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: var(--spacing-lg) 0 var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--border-primary);
+  }
+
+  .section-title.empty {
+    display: none;
+  }
+
+  /* ========== RESULTS GRID ========== */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .result-card {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  .result-card:hover {
+    background: var(--surface-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-secondary);
+  }
+
+  .result-card:hover::before {
+    opacity: 1;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .card-bibs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .bib-chip {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--accent-secondary);
+    color: var(--text-inverse);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    font-family: 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', monospace;
+  }
+
+  .bib-chip[data-dist="1"] {
+    background: var(--warning);
+    color: var(--text-inverse);
+  }
+
+  .card-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: flex-end;
+  }
+
+  .card-actions .btn {
+    height: 36px;
+    padding: 0 var(--spacing-sm);
+    font-size: var(--font-size-xs);
+  }
+
+  /* ========== BROWSE CARDS ========== */
+  .browse-card {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+  }
+
+  .browse-card:hover {
+    background: var(--surface-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .browse-main {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+  }
+
+  .browse-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-muted);
+  }
+
+  .browse-bib {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', monospace;
+  }
+
+  .browse-count {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+  }
+
+  /* ========== EMPTY STATES ========== */
+  .empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    color: var(--text-muted);
+  }
+
+  .empty-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--spacing-md);
+    opacity: 0.5;
+  }
+
+  .empty-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .empty-message {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .alert {
+    padding: var(--spacing-md);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-md);
+    color: var(--danger);
+    font-size: var(--font-size-sm);
+    margin: var(--spacing-md) 0;
+  }
+
+  /* ========== VIEWER MODAL ========== */
+  .viewer-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+  }
+
+  .viewer-modal.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .viewer-content {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    max-width: 95vw;
+    max-height: 95vh;
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .viewer-header {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    background: var(--bg-secondary);
+  }
+
+  .viewer-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .viewer-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+  }
+
+  .viewer-body {
+    position: relative;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .viewer-image,
+  .viewer-iframe {
+    width: 100%;
+    height: 80vh;
+    max-height: 80vh;
+    object-fit: contain;
+    border: none;
+  }
+
+  .viewer-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-full);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    opacity: 0;
+  }
+
+  .viewer-nav:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .viewer-nav.prev {
+    left: var(--spacing-md);
+  }
+
+  .viewer-nav.next {
+    right: var(--spacing-md);
+  }
+
+  .viewer-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .viewer-body:hover .viewer-nav {
+    opacity: 1;
+  }
+
+  .viewer-footer {
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--border-primary);
+    background: var(--bg-secondary);
+    text-align: center;
+  }
+
+  .viewer-meta {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+  }
+
+  /* ========== FLOATING ACTION BUTTON ========== */
+  .fab {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    width: 56px;
+    height: 56px;
+    background: var(--accent-primary);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-fast);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+  }
+
+  .fab.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .fab:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* ========== LOADING STATES ========== */
+  .loading {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border-primary);
+    border-top-color: var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ========== RESPONSIVE DESIGN ========== */
+  @media (max-width: 1024px) {
+    .results-grid {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+    
+    .options-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-content {
+      padding: var(--spacing-md);
+    }
+    
+    .header-top {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+    }
+    
+    .main {
+      padding: 0 var(--spacing-md) var(--spacing-xl);
+    }
+    
+    .main-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .toolbar-section {
+      justify-content: center;
+    }
+    
+    .results-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .result-card {
+      padding: var(--spacing-md);
+    }
+    
+    .viewer-content {
+      margin: var(--spacing-sm);
+      max-width: calc(100vw - 16px);
+      max-height: calc(100vh - 16px);
+    }
+    
+    .viewer-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--spacing-sm);
+    }
+    
+    .viewer-actions {
+      justify-content: center;
+    }
+    
+    .fab {
+      bottom: var(--spacing-md);
+      right: var(--spacing-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .brand {
+      font-size: var(--font-size-lg);
+    }
+    
+    .search-input {
+      height: 48px;
+      font-size: var(--font-size-base);
+    }
+    
+    .card-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .card-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  /* ========== ACCESSIBILITY ========== */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ========== FOCUS STYLES ========== */
+  .btn:focus-visible,
+  .result-card:focus-visible,
+  .browse-card:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  /* ========== PRINT STYLES ========== */
+  @media print {
+    .header,
+    .fab,
+    .viewer-modal {
+      display: none;
+    }
+    
+    .main {
+      max-width: none;
+    }
+    
+    .result-card {
+      break-inside: avoid;
+      box-shadow: none;
+      border: 1px solid #ccc;
+    }
   }
 </style>
 </head>
 <body>
-    <div class="topbar">
-      <div class="wrap">
-        <div class="row">
-          <div class="brand" aria-label="Pencari Bib Pro">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>
-            <span>Pencari Bib <span style="opacity:.6">Pro</span></span>
+  <!-- Header -->
+  <header class="header" role="banner">
+    <div class="header-content">
+      <div class="header-top">
+        <div class="brand" aria-label="Pencari Bib Pro">
+          <div class="brand-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/>
+            </svg>
           </div>
-          <div class="toolbar">
-            <button id="themeToggle" class="btn ghost" title="Ganti tema gelap/terang" aria-label="Ganti tema">🌙</button>
+          <span class="brand-text">
+            Pencari Bib <span class="pro">Pro</span>
+          </span>
+        </div>
+        
+        <div class="header-actions">
+          <button id="themeToggle" class="btn ghost" title="Ganti tema gelap/terang" aria-label="Ganti tema">
+            🌙
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Section -->
+      <div class="search-section" role="search">
+        <div class="search-container">
+          <div class="search-input-wrapper">
+            <div class="search-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/>
+              </svg>
+            </div>
+            <input 
+              id="bibInput" 
+              type="text" 
+              inputmode="numeric" 
+              autocomplete="off" 
+              placeholder="Masukkan nomor bib... (contoh: 13405)" 
+              aria-label="Cari nomor bib" 
+              class="search-input"
+            />
+            <button id="clearInput" class="clear-button" title="Bersihkan input" aria-label="Bersihkan">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
           </div>
         </div>
 
-        <div class="searchbar" role="search">
-            <div class="search">
-              <span class="icon" aria-hidden="true">🔎</span>
-              <input id="bibInput" type="text" inputmode="numeric" autocomplete="off" placeholder="Cari nomor bib… (mis. 13405)" aria-label="Cari nomor bib" />
-              <button id="clearInput" class="clear" title="Bersihkan input" aria-label="Bersihkan">✕</button>
+        <!-- Advanced Options -->
+        <details id="advPanel" class="advanced-panel">
+          <summary class="advanced-summary">
+            <span>⚙️ Opsi Lanjutan</span>
+            <div class="advanced-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7.41 8.84L12 13.42l4.59-4.58L18 10.25l-6 6-6-6z"/>
+              </svg>
             </div>
-        </div>
-  
-        <details id="advPanel">
-          <summary>⚙️ Opsi lanjutan</summary>
-          <div class="optgrid" role="group" aria-label="Opsi lanjutan">
-            <div class="field">
-              <label for="minDigits">Minimal digit untuk pencarian</label>
-              <input id="minDigits" type="number" min="1" step="1" value="2" />
-            </div>
-            <div class="field">
-              <label for="sortMode">Urutkan hasil</label>
-              <select id="sortMode">
-                <option value="best">Terbaik (jarak → kepercayaan → nama)</option>
-                <option value="conf">Kepercayaan tertinggi</option>
-                <option value="name">Nama file (A→Z)</option>
-              </select>
-            </div>
-            <div class="switch" title="Anggap 04 dan 4 setara saat pencocokan">
-              <input id="ignoreZeros" type="checkbox" checked />
-              <label for="ignoreZeros" style="margin:0;">Abaikan nol di depan</label>
-            </div>
-            <div class="switch" title="Wajibkan panjang bib kandidat sama dengan input">
-              <input id="sameLen" type="checkbox" />
-              <label for="sameLen" style="margin:0;">Wajibkan panjang sama</label>
-            </div>
-            <div class="switch" title="Hanya tampilkan kecocokan tepat (jarak 0)">
-              <input id="exactOnly" type="checkbox" />
-              <label for="exactOnly" style="margin:0;">Hanya cocok tepat</label>
+          </summary>
+          <div class="advanced-content">
+            <div class="options-grid">
+              <div class="option-group">
+                <div class="option-group-title">Pengaturan Pencarian</div>
+                <div class="form-field">
+                  <label for="minDigits" class="form-label">Minimal digit untuk pencarian</label>
+                  <input id="minDigits" type="number" min="1" step="1" value="2" class="form-input" />
+                </div>
+                <div class="form-field">
+                  <label for="sortMode" class="form-label">Urutkan hasil</label>
+                  <select id="sortMode" class="form-select">
+                    <option value="best">Terbaik (jarak → kepercayaan → nama)</option>
+                    <option value="conf">Kepercayaan tertinggi</option>
+                    <option value="name">Nama file (A→Z)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="option-group">
+                <div class="option-group-title">Aturan Pencocokan</div>
+                <label class="switch-field" title="Anggap 04 dan 4 setara saat pencocokan">
+                  <input id="ignoreZeros" type="checkbox" checked class="switch-input" />
+                  <span class="switch-label">Abaikan nol di depan</span>
+                </label>
+                <label class="switch-field" title="Wajibkan panjang bib kandidat sama dengan input">
+                  <input id="sameLen" type="checkbox" class="switch-input" />
+                  <span class="switch-label">Wajibkan panjang sama</span>
+                </label>
+                <label class="switch-field" title="Hanya tampilkan kecocokan tepat (jarak 0)">
+                  <input id="exactOnly" type="checkbox" class="switch-input" />
+                  <span class="switch-label">Hanya cocok tepat</span>
+                </label>
+              </div>
             </div>
           </div>
         </details>
-  
-        <div id="status" class="pill" aria-live="polite">Memuat dataset…</div>
-        <div class="pills">
-          <div class="pill" id="countPill">0 hasil</div>
-          <div class="pill" id="datasetPill">dataset: belum dimuat</div>
-          <div class="pill" id="cachePill">cache: —</div>
-          <div class="pill" id="rulePill">aturan: mengandung input</div>
+
+        <!-- Status & Pills -->
+        <div class="status-section">
+          <div id="status" class="status-message" aria-live="polite">Memuat dataset...</div>
+          <div class="status-pills">
+            <div class="pill primary" id="countPill">0 hasil</div>
+            <div class="pill" id="datasetPill">dataset: belum dimuat</div>
+            <div class="pill" id="cachePill">cache: —</div>
+            <div class="pill" id="rulePill">aturan: mengandung input</div>
+          </div>
         </div>
       </div>
     </div>
-  
-    <main class="wrap">
-      <div class="main-toolbar">
-          <div class="data-actions">
-              <label class="btn" title="Muat dataset dari berkas JSON (akan disimpan ke cache)">
-                  <input id="filePicker" type="file" accept=".json,application/json" hidden />
-                  Pilih JSON
-              </label>
-              <button id="browseBtn" class="btn">Browse Semua Bib</button>
-              <button id="clearCache" class="btn" title="Hapus dataset yang tersimpan di browser ini">Hapus cache</button>
-          </div>
-          <div id="results-toolbar" hidden>
-              <button id="exportCsv" class="btn" title="Ekspor hasil ke CSV">Ekspor CSV</button>
-          </div>
-      </div>
+  </header>
 
-      <h2 id="results-title" class="results-title"></h2>
-      
-      <p id="noData" class="alert">Belum ada dataset yang dimuat.</p>
-      <p id="noMatches" class="empty" hidden>Tidak ada hasil.</p>
-      <section id="grid" class="grid" aria-live="polite"></section>
-      <div id="sentinel" style="height:1px;"></div>
-    </main>
-  
-    <dialog id="viewer" class="viewer" aria-label="Pratinjau gambar ukuran penuh">
-      <div class="v-head">
-        <div class="v-title" id="viewerTitle">(judul)</div>
-        <div class="v-actions">
-          <a id="viewerOpenDrive" class="btn" target="_blank" rel="noopener noreferrer">Buka di Drive</a>
-          <a id="viewerDownload" class="btn primary" target="_blank" rel="noopener noreferrer">Unduh</a>
-          <button id="viewerClose" class="btn warn">Tutup</button>
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Toolbar -->
+    <div class="main-toolbar">
+      <div class="toolbar-section">
+        <label class="btn" title="Muat dataset dari berkas JSON (akan disimpan ke cache)">
+          <input id="filePicker" type="file" accept=".json,application/json" hidden />
+          📁 Pilih JSON
+        </label>
+        <button id="browseBtn" class="btn">📋 Browse Semua Bib</button>
+        <button id="clearCache" class="btn" title="Hapus dataset yang tersimpan di browser ini">🗑️ Hapus Cache</button>
+      </div>
+      <div id="results-toolbar" class="toolbar-section" hidden>
+        <button id="exportCsv" class="btn secondary" title="Ekspor hasil ke CSV">📊 Ekspor CSV</button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <h2 id="results-title" class="section-title"></h2>
+    
+    <!-- Empty States -->
+    <div id="noData" class="empty-state">
+      <div class="empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+        </svg>
+      </div>
+      <div class="empty-title">Belum ada dataset yang dimuat</div>
+      <div class="empty-message">Pilih berkas JSON untuk memuat dataset pencarian nomor bib</div>
+    </div>
+    
+    <div id="noMatches" class="empty-state" hidden>
+      <div class="empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/>
+        </svg>
+      </div>
+      <div class="empty-title">Tidak ada hasil ditemukan</div>
+      <div class="empty-message">Coba gunakan kata kunci yang berbeda atau ubah pengaturan pencarian</div>
+    </div>
+
+    <!-- Results Grid -->
+    <div id="grid" class="results-grid" aria-live="polite"></div>
+    
+    <!-- Loading Sentinel -->
+    <div id="sentinel" style="height: 1px;" aria-hidden="true"></div>
+  </main>
+
+  <!-- Viewer Modal -->
+  <div id="viewer" class="viewer-modal" aria-label="Pratinjau gambar ukuran penuh" role="dialog" aria-modal="true">
+    <div class="viewer-content">
+      <div class="viewer-header">
+        <h3 id="viewerTitle" class="viewer-title">(judul)</h3>
+        <div class="viewer-actions">
+          <a id="viewerOpenDrive" class="btn" target="_blank" rel="noopener noreferrer">🔗 Buka di Drive</a>
+          <a id="viewerDownload" class="btn primary" target="_blank" rel="noopener noreferrer">⬇️ Unduh</a>
+          <button id="viewerClose" class="btn danger">✕ Tutup</button>
         </div>
       </div>
-      <div class="v-body">
-        <img id="viewerImg" alt="pratinjau gambar" />
-        <iframe id="viewerIframe" class="" allow="autoplay; fullscreen" hidden></iframe>
-        <button id="prevBtn" class="v-nav prev" title="Sebelumnya (Panah Kiri)">
-            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      <div class="viewer-body">
+        <img id="viewerImg" alt="pratinjau gambar" class="viewer-image" />
+        <iframe id="viewerIframe" class="viewer-iframe" allow="autoplay; fullscreen" hidden></iframe>
+        <button id="prevBtn" class="viewer-nav prev" title="Sebelumnya (Panah Kiri)" aria-label="Gambar sebelumnya">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
         </button>
-        <button id="nextBtn" class="v-nav next" title="Berikutnya (Panah Kanan)">
-            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+        <button id="nextBtn" class="viewer-nav next" title="Berikutnya (Panah Kanan)" aria-label="Gambar berikutnya">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+          </svg>
         </button>
       </div>
-      <div class="v-foot">
-        <div id="viewerMeta" class="v-meta"></div>
+      <div class="viewer-footer">
+        <div id="viewerMeta" class="viewer-meta"></div>
       </div>
-    </dialog>
-  
-    <button id="toTop" class="to-top" title="Kembali ke atas" aria-label="Kembali ke atas">▲</button>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <button id="toTop" class="fab" title="Kembali ke atas" aria-label="Kembali ke atas">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+    </svg>
+  </button>
+
 <script>
 /* ===========================================================
-    Pencari Bib Pro — UI rapi, cepat, profesional (client-side)
+    Pencari Bib Pro — Clean scrolling header implementation
     =========================================================== */
 (() => {
   // --- Elemen UI ---
@@ -360,9 +1326,11 @@
   const toTop = document.getElementById('toTop');
   const resultsToolbar = document.getElementById('results-toolbar');
   const resultsTitle = document.getElementById('results-title');
+  const header = document.querySelector('.header');
+  
   // Dialog Viewer
-  const viewerDialog = document.getElementById('viewer');
-  const viewerBody = document.querySelector('.v-body');
+  const viewerModal = document.getElementById('viewer');
+  const viewerBody = document.querySelector('.viewer-body');
   const viewerTitle = document.getElementById('viewerTitle');
   const viewerImg = document.getElementById('viewerImg');
   const viewerIframe = document.getElementById('viewerIframe');
@@ -409,9 +1377,15 @@
     if (typeof prefs.sameLen === 'boolean') sameLen.checked = prefs.sameLen;
     if (typeof prefs.exactOnly === 'boolean') exactOnly.checked = prefs.exactOnly;
     if (typeof prefs.sortMode === 'string') sortMode.value = prefs.sortMode;
-    themeToggle.textContent = (document.documentElement.getAttribute('data-theme') === 'light') ? '☀️' : '🌙';
+    updateThemeToggle();
   }
 
+  function updateThemeToggle() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeToggle.textContent = isDark ? '☀️' : '🌙';
+  }
+
+  // Cache functions
   async function idbOpen() {
     return new Promise((resolve) => {
       if (!('indexedDB' in window)) return resolve(null);
@@ -484,16 +1458,101 @@
   let LAST_RESULTS = [];
   let LAST_QUERY_DIGITS = '';
   let CURRENT_INDEX = -1;
-  const RENDER_BATCH = 100;
+  const RENDER_BATCH = 50;
   let renderedCount = 0;
   let touchStartX = 0, touchEndX = 0;
   const SWIPE_THRESHOLD = 50;
+
+  // Header scroll behavior with hysteresis
+  let lastScrollY = 0;
+  let isCompact = false;
+  let scrollDirection = 'up';
+  let directionChangeTimeout = null;
+  let scrollTimeout = null;
+  let isScrolling = false;
+  
+  // Hysteresis thresholds to prevent jitter
+  const COMPACT_THRESHOLD = 200; // Scroll down to compact
+  const EXPAND_THRESHOLD = 100;  // Scroll up to expand
+  const DIRECTION_BUFFER = 50;   // Buffer for direction changes
+
+  function updateHeaderState() {
+    const currentScrollY = window.scrollY;
+    
+    // Determine if we should be compact based on hysteresis
+    let shouldBeCompact = isCompact;
+    
+    if (!isCompact && currentScrollY > COMPACT_THRESHOLD && scrollDirection === 'down') {
+      shouldBeCompact = true;
+    } else if (isCompact && (currentScrollY < EXPAND_THRESHOLD || scrollDirection === 'up')) {
+      shouldBeCompact = false;
+    }
+    
+    // Apply state change only if it's different
+    if (shouldBeCompact !== isCompact) {
+      isCompact = shouldBeCompact;
+      header.classList.toggle('compact', isCompact);
+    }
+    
+    // Back to top button
+    toTop.classList.toggle('visible', currentScrollY > 600);
+  }
+
+  function handleScroll() {
+    const currentScrollY = window.scrollY;
+    const scrollDelta = currentScrollY - lastScrollY;
+    
+    // Only process significant scroll movements
+    if (Math.abs(scrollDelta) < 3) {
+      return;
+    }
+    
+    // Set scrolling flag
+    isScrolling = true;
+    
+    // Determine scroll direction with buffer
+    if (Math.abs(scrollDelta) > DIRECTION_BUFFER / 10) {
+      const newDirection = scrollDelta > 0 ? 'down' : 'up';
+      
+      if (newDirection !== scrollDirection) {
+        // Clear any pending direction change
+        clearTimeout(directionChangeTimeout);
+        
+        // Delay direction change to prevent rapid switching
+        directionChangeTimeout = setTimeout(() => {
+          scrollDirection = newDirection;
+          updateHeaderState();
+        }, 50);
+      } else {
+        // Same direction, update immediately
+        clearTimeout(directionChangeTimeout);
+        updateHeaderState();
+      }
+    }
+    
+    lastScrollY = currentScrollY;
+    
+    // Clear scrolling flag after a delay
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      isScrolling = false;
+    }, 100);
+  }
+
+  // Show/hide clear button based on input
+  function updateClearButton() {
+    if (bibInput.value.trim()) {
+      clearInput.classList.add('visible');
+    } else {
+      clearInput.classList.remove('visible');
+    }
+  }
 
   (async function boot() {
     idb = await idbOpen();
     cachePill.textContent = idb ? 'cache: siap' : 'cache: cadangan localStorage';
     try {
-      setStatus('Mengambil ./bib_export.json …');
+      setStatus('Mengambil ./bib_export.json…', false, true);
       const res = await fetch('./bib_export.json', { cache: 'no-store' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
@@ -516,14 +1575,16 @@
   function ingest(json, label = 'dataset') {
     if (!Array.isArray(json)) { setStatus('Root JSON harus berupa array objek.', true); return; }
     DATA = json.map(item => ({
-      file_id: item.file_id ?? null, file_name: item.file_name ?? '', web_view_link: item.web_view_link ?? null,
+      file_id: item.file_id ?? null, 
+      file_name: item.file_name ?? '', 
+      web_view_link: item.web_view_link ?? null,
       bib_numbers: Array.isArray(item.bib_numbers) ? item.bib_numbers.filter(x => typeof x === 'string' || typeof x === 'number').map(String) : [],
       confidences: Array.isArray(item.confidences) ? item.confidences : []
     }));
     datasetPill.textContent = `dataset: ${label} (${DATA.length} foto)`;
     noDataEl.hidden = true;
     
-    setStatus('Mengindeks data untuk browse...');
+    setStatus('Mengindeks data untuk browse...', false, true);
     BROWSE_INDEX.clear();
     for (const rec of DATA) {
       const seenInThisRecord = new Set();
@@ -600,6 +1661,7 @@
     LAST_QUERY_DIGITS = raw || '';
     resultsToolbar.hidden = true;
 
+    // Update rule pill
     if (!requireSameLen && !requireExact) {
         rulePill.textContent = 'aturan: mengandung input';
     } else if (requireExact) {
@@ -622,6 +1684,7 @@
     }
 
     resultsTitle.textContent = `Hasil Pencarian untuk "${raw}"`;
+    resultsTitle.classList.remove('empty');
     const results = [];
 
     for (const rec of DATA) {
@@ -677,45 +1740,70 @@
   function buildCard(item, idx) {
     const { rec, matches } = item;
     const card = document.createElement('article');
-    card.className = 'card';
+    card.className = 'result-card';
     card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', `Lihat foto ${rec.file_name || 'tanpa nama'}`);
     
     card.addEventListener('click', (e) => {
       if (e.target.closest('a')) { return; }
       openPreview(idx);
     });
     
-    const body = document.createElement('div');
-    body.className = 'body';
-    const title = document.createElement('div');
-    title.className = 'fname';
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openPreview(idx);
+      }
+    });
+    
+    // Card Header
+    const header = document.createElement('div');
+    header.className = 'card-header';
+    
+    const icon = document.createElement('div');
+    icon.className = 'card-icon';
+    icon.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+    </svg>`;
+    
+    const title = document.createElement('h3');
+    title.className = 'card-title';
     title.textContent = rec.file_name || '(tanpa nama berkas)';
-    body.appendChild(title);
-    const bibsRow = document.createElement('div');
-    bibsRow.className = 'bibs';
+    
+    header.appendChild(icon);
+    header.appendChild(title);
+    
+    // Card Bibs
+    const bibsContainer = document.createElement('div');
+    bibsContainer.className = 'card-bibs';
     matches.slice(0, 6).forEach(m => {
       const chip = document.createElement('span');
-      chip.className = 'chip';
+      chip.className = 'bib-chip';
       chip.dataset.dist = String(m.dist);
       chip.title = (m.conf != null) ? `Jarak: ${m.dist} | Kepercayaan: ${m.conf}` : `Jarak: ${m.dist}`;
       chip.textContent = m.bib;
-      bibsRow.appendChild(chip);
+      bibsContainer.appendChild(chip);
     });
-    body.appendChild(bibsRow);
-    const meta = document.createElement('div');
-    meta.className = 'meta';
+    
+    // Card Actions
+    const actions = document.createElement('div');
+    actions.className = 'card-actions';
 
     if (rec.web_view_link) {
-      const link = document.createElement('a');
-      link.href = rec.web_view_link;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.textContent = 'Buka di Drive';
-      link.classList.add('btn');
-      meta.appendChild(link);
+      const driveLink = document.createElement('a');
+      driveLink.href = rec.web_view_link;
+      driveLink.target = '_blank';
+      driveLink.rel = 'noopener noreferrer';
+      driveLink.textContent = 'Drive';
+      driveLink.className = 'btn';
+      driveLink.title = 'Buka di Google Drive';
+      actions.appendChild(driveLink);
     }
-    card.appendChild(body);
-    card.appendChild(meta);
+    
+    card.appendChild(header);
+    card.appendChild(bibsContainer);
+    card.appendChild(actions);
     return card;
   }
 
@@ -726,12 +1814,13 @@
     }
     grid.innerHTML = '';
     bibInput.value = '';
+    updateClearButton();
     noMatchesEl.hidden = true;
     resultsToolbar.hidden = true;
     renderedCount = 0;
     const minLen = Math.max(1, parseInt(minDigits.value || '1', 10));
 
-    setStatus('Memfilter indeks...');
+    setStatus('Memfilter indeks...', false, true);
     setTimeout(() => {
         const filteredBibs = [];
         for (const [bib, count] of BROWSE_INDEX.entries()) {
@@ -742,12 +1831,13 @@
         
         LAST_RESULTS = filteredBibs.sort((a, b) => a.bib - b.bib);
         
-        countPill.textContent = `Menampilkan ${LAST_RESULTS.length} bib terindeks`;
+        countPill.textContent = `${LAST_RESULTS.length} bib terindeks`;
         resultsTitle.textContent = 'Indeks Semua Nomor Bib';
+        resultsTitle.classList.remove('empty');
         setStatus('');
         
         if (LAST_RESULTS.length === 0) {
-            noMatchesEl.textContent = `Tidak ada bib dengan minimal ${minLen} digit.`;
+            noMatchesEl.querySelector('.empty-title').textContent = `Tidak ada bib dengan minimal ${minLen} digit`;
             noMatchesEl.hidden = false;
             return;
         }
@@ -760,18 +1850,29 @@
   function buildBrowseCard(item, idx) {
     const { bib, count } = item;
     const card = document.createElement('article');
-    card.className = 'card browse-item';
+    card.className = 'browse-card';
     card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', `Cari bib ${bib}`);
     
     const main = document.createElement('div');
-    main.className = 'browse-item-main';
-    const icon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>`;
-    main.innerHTML = icon + `<span>${bib}</span>`;
+    main.className = 'browse-main';
+    
+    const icon = document.createElement('div');
+    icon.className = 'browse-icon';
+    icon.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+    </svg>`;
+    
+    const bibSpan = document.createElement('span');
+    bibSpan.className = 'browse-bib';
+    bibSpan.textContent = bib;
+    
+    main.appendChild(icon);
+    main.appendChild(bibSpan);
 
     const countChip = document.createElement('span');
-    countChip.className = 'chip';
-    countChip.style.backgroundColor = 'var(--muted)';
-    countChip.style.color = 'var(--bg)';
+    countChip.className = 'browse-count';
     countChip.textContent = `${count} foto`;
     countChip.title = `Nomor bib ${bib} ditemukan di ${count} foto`;
     
@@ -780,8 +1881,19 @@
 
     card.addEventListener('click', () => {
         bibInput.value = bib;
+        updateClearButton();
         refresh();
     });
+    
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        bibInput.value = bib;
+        updateClearButton();
+        refresh();
+      }
+    });
+    
     return card;
   }
   
@@ -812,12 +1924,8 @@
     if (!LAST_RESULTS.length || typeof LAST_RESULTS[idx] !== 'object') return;
     CURRENT_INDEX = Math.min(Math.max(idx, 0), LAST_RESULTS.length - 1);
     updateViewer();
-    if (typeof viewerDialog.showModal === 'function') {
-      viewerDialog.showModal();
-    } else {
-      viewerDialog.setAttribute('open', '');
-      document.documentElement.style.overflow = 'hidden';
-    }
+    viewerModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', onViewerKey);
     viewerBody.addEventListener('touchstart', handleTouchStart, { passive: true });
     viewerBody.addEventListener('touchmove', handleTouchMove, { passive: true });
@@ -827,12 +1935,8 @@
   function closePreview() {
     viewerImg.src = '';
     viewerIframe.src = '';
-    if (typeof viewerDialog.close === 'function') {
-      viewerDialog.close();
-    } else {
-      viewerDialog.removeAttribute('open');
-      document.documentElement.style.overflow = '';
-    }
+    viewerModal.classList.remove('open');
+    document.body.style.overflow = '';
     document.removeEventListener('keydown', onViewerKey);
     viewerBody.removeEventListener('touchstart', handleTouchStart);
     viewerBody.removeEventListener('touchmove', handleTouchMove);
@@ -870,56 +1974,100 @@
     const { rec, matches } = item;
     const imgUrl = driveDirectImg(rec.file_id);
     const prevUrl = drivePreviewUrl(rec.file_id, rec.web_view_link);
+    
     viewerTitle.textContent = rec.file_name || '(tanpa nama berkas)';
     const topBibs = matches.slice(0, 5).map(m => `${m.bib}${m.dist === 0 ? ' (cocok)' : ''}`).join(', ');
     viewerMeta.textContent = topBibs ? `Kecocokan: ${topBibs}` : '';
 
-    if (rec.web_view_link) { viewerOpenDrv.classList.remove('hidden'); viewerOpenDrv.href = rec.web_view_link; } 
-    else { viewerOpenDrv.classList.add('hidden'); viewerOpenDrv.removeAttribute('href'); }
+    if (rec.web_view_link) { 
+      viewerOpenDrv.style.display = 'inline-flex'; 
+      viewerOpenDrv.href = rec.web_view_link; 
+    } else { 
+      viewerOpenDrv.style.display = 'none'; 
+      viewerOpenDrv.removeAttribute('href'); 
+    }
 
-    if (imgUrl) { viewerDownload.classList.remove('hidden'); viewerDownload.href = imgUrl; } 
-    else { viewerDownload.classList.add('hidden'); viewerDownload.removeAttribute('href'); }
+    if (imgUrl) { 
+      viewerDownload.style.display = 'inline-flex'; 
+      viewerDownload.href = imgUrl; 
+    } else { 
+      viewerDownload.style.display = 'none'; 
+      viewerDownload.removeAttribute('href'); 
+    }
 
     if (prevUrl) {
-        viewerIframe.hidden = false; viewerImg.hidden = true;
+        viewerIframe.hidden = false; 
+        viewerImg.hidden = true;
         viewerIframe.src = prevUrl;
     } else if (imgUrl) {
-        viewerImg.hidden = false; viewerIframe.hidden = true;
+        viewerImg.hidden = false; 
+        viewerIframe.hidden = true;
         viewerImg.src = imgUrl;
     } else {
-        viewerImg.hidden = false; viewerIframe.hidden = true;
-        viewerImg.src = ''; viewerImg.alt = 'Pratinjau tidak tersedia';
+        viewerImg.hidden = false; 
+        viewerIframe.hidden = true;
+        viewerImg.src = ''; 
+        viewerImg.alt = 'Pratinjau tidak tersedia';
     }
+    
     prevBtn.disabled = CURRENT_INDEX <= 0;
     nextBtn.disabled = CURRENT_INDEX >= (LAST_RESULTS.length - 1);
   }
 
+  // Event Listeners
   viewerClose.addEventListener('click', closePreview);
+  viewerModal.addEventListener('click', (e) => {
+    if (e.target === viewerModal) closePreview();
+  });
   prevBtn.addEventListener('click', () => movePreview(-1));
   nextBtn.addEventListener('click', () => movePreview(1));
 
-  let t = null;
-  const trigger = () => { clearTimeout(t); t = setTimeout(() => { savePrefs(); refresh(); }, 90); };
+  let debounceTimer = null;
+  const trigger = () => { 
+    clearTimeout(debounceTimer); 
+    debounceTimer = setTimeout(() => { 
+      savePrefs(); 
+      refresh(); 
+    }, 150); 
+  };
 
-  bibInput.addEventListener('input', trigger);
+  bibInput.addEventListener('input', () => {
+    updateClearButton();
+    trigger();
+  });
+  
+  bibInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      trigger();
+    }
+  });
+
   minDigits.addEventListener('input', trigger);
   ignoreZeros.addEventListener('change', trigger);
   sameLen.addEventListener('change', trigger);
   exactOnly.addEventListener('change', trigger);
   sortMode.addEventListener('change', trigger);
-  clearInput.addEventListener('click', () => { bibInput.value = ''; trigger(); bibInput.focus(); });
+  
+  clearInput.addEventListener('click', () => { 
+    bibInput.value = ''; 
+    updateClearButton();
+    trigger(); 
+    bibInput.focus(); 
+  });
 
   filePicker.addEventListener('change', async (ev) => {
-    const file = ev.target.files?.[0]; if (!file) return;
+    const file = ev.target.files?.[0]; 
+    if (!file) return;
     try {
-      setStatus(`Membaca ${file.name}…`);
+      setStatus(`Membaca ${file.name}…`, false, true);
       const text = await file.text();
       const json = JSON.parse(text);
       ingest(json, file.name);
       await cachePut({ label: file.name, data: json });
       setStatus(`Berhasil memuat ${file.name} dan menyimpannya ke cache. Ketik untuk mencari.`);
     } catch (e) {
-      setStatus(`Gagal membaca berkas JSON: ${e.message}`, true);
+      setStatus(`Gagal membaca berkas JSON: ${e.message}`, true, true);
     } finally {
       ev.target.value = '';
     }
@@ -927,31 +2075,76 @@
 
   browseBtn.addEventListener('click', browseAll);
   clearCache.addEventListener('click', async () => { await cacheClear(); });
+  
   themeToggle.addEventListener('click', () => {
     const cur = document.documentElement.getAttribute('data-theme');
     const next = cur === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', next);
-    themeToggle.textContent = next === 'light' ? '☀️' : '🌙';
+    updateThemeToggle();
     savePrefs();
   });
 
+  // Scroll handling with throttling for better performance
+  let scrollThrottleTimer = null;
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 400) toTop.classList.add('show');
-    else toTop.classList.remove('show');
+    if (scrollThrottleTimer) return;
+    
+    scrollThrottleTimer = setTimeout(() => {
+      handleScroll();
+      scrollThrottleTimer = null;
+    }, 16); // ~60fps
+  }, { passive: true });
+  
+  toTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Export CSV functionality
+  exportCsv.addEventListener('click', () => {
+    if (LAST_RESULTS.length === 0) return;
+    
+    const csvContent = [
+      ['Nama File', 'File ID', 'Link', 'Nomor Bib', 'Jarak', 'Kepercayaan'].join(','),
+      ...LAST_RESULTS.flatMap(item => 
+        item.matches.map(match => [
+          `"${item.rec.file_name || ''}"`,
+          `"${item.rec.file_id || ''}"`,
+          `"${item.rec.web_view_link || ''}"`,
+          `"${match.bib}"`,
+          match.dist,
+          match.conf ?? ''
+        ].join(','))
+      )
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `pencarian-bib-${LAST_QUERY_DIGITS}-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
 
   let statusTimer = null;
   function setStatus(msg, isError = false, transient = false) {
-    statusEl.textContent = msg;
-    statusEl.style.color = isError ? 'var(--danger)' : 'var(--muted)';
+    if (msg.includes('…') || msg.includes('...')) {
+      statusEl.innerHTML = `<span class="loading"><span class="spinner"></span> ${msg}</span>`;
+    } else {
+      statusEl.textContent = msg;
+    }
+    statusEl.style.color = isError ? 'var(--danger)' : 'var(--text-muted)';
     if (transient) {
       clearTimeout(statusTimer);
-      statusTimer = setTimeout(() => { statusEl.textContent = ''; }, 1500);
+      statusTimer = setTimeout(() => { 
+        statusEl.textContent = ''; 
+        statusEl.innerHTML = '';
+      }, 2000);
     }
   }
+
+  // Initialize clear button state
+  updateClearButton();
 })();
 </script>
 </body>
 </html>
-
