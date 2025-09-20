@@ -217,35 +217,19 @@
     padding: 0;
   }
 
-  /* ========== MOBILE HEADER MODIFICATIONS ========== */
-  @media (max-width: 768px) and (max-height: 800px) {
-    .header {
-      position: static;
-      background: var(--bg-primary);
-      border-bottom: none;
-      backdrop-filter: none;
-    }
-    
-    .header-content {
-      padding: var(--spacing-sm) var(--spacing-md);
-    }
-    
-    .header-top {
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .brand {
-      font-size: var(--font-size-lg);
-    }
-    
-    .brand-icon {
-      width: 28px;
-      height: 28px;
-    }
-    
-    .search-section {
-      display: none; /* Hidden on mobile - will use bottom search */
-    }
+  /* ========== UNIFIED LAYOUT - BOTTOM SEARCH DEFAULT ========== */
+  body {
+    padding-bottom: 80px; /* Space for bottom search on all devices */
+  }
+  
+  /* Hide desktop search section - using bottom search for all */
+  .search-section {
+    display: none;
+  }
+  
+  /* Show bottom search on all devices */
+  .bottom-search {
+    display: block;
   }
 
   /* ========== SEARCH SECTION ========== */
@@ -340,7 +324,7 @@
     transform: translateY(-50%) scale(1.05);
   }
 
-  /* ========== BOTTOM FLOATING SEARCH (MOBILE) ========== */
+  /* ========== BOTTOM FLOATING SEARCH (UNIVERSAL) ========== */
   .bottom-search {
     position: fixed;
     bottom: 0;
@@ -353,18 +337,14 @@
     padding-bottom: calc(var(--spacing-sm) + var(--safe-area-bottom));
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px) saturate(180%);
-    transform: translateY(100%);
-    transition: transform var(--transition-normal);
-    display: none;
-  }
-
-  .bottom-search.visible {
     transform: translateY(0);
+    transition: transform var(--transition-normal);
+    display: block;
   }
 
   .bottom-search-container {
     position: relative;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
   }
 
@@ -452,43 +432,77 @@
     transform: scale(1.05);
   }
 
-  /* ========== MOBILE LAYOUT ADJUSTMENTS ========== */
-  @media (max-width: 768px) and (max-height: 800px) {
-    body.mobile-mode {
-      padding-bottom: 80px; /* Space for bottom search */
-    }
-    
-    .bottom-search {
-      display: block;
-    }
-    
-    .main {
-      padding-top: 0;
-    }
-    
-    .main-toolbar {
-      margin-top: var(--spacing-md);
-      flex-direction: column;
-      gap: var(--spacing-sm);
-    }
-    
-    .toolbar-section {
-      width: 100%;
-      justify-content: center;
-    }
-    
-    .results-grid {
-      grid-template-columns: 1fr;
-      gap: var(--spacing-sm);
-    }
-    
-    .result-card {
-      padding: var(--spacing-md);
-    }
-    
-    .fab {
-      bottom: 90px; /* Above bottom search */
-    }
+  /* ========== UNIVERSAL LAYOUT ADJUSTMENTS ========== */
+  .main {
+    padding-top: 0;
+  }
+  
+  .fab {
+    bottom: 90px; /* Above bottom search */
+  }
+
+  /* ========== BOTTOM SHEET MODAL (UNIVERSAL) ========== */
+  .bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 300;
+    background: var(--surface-primary);
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+    max-height: 80vh;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform var(--transition-normal);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .bottom-sheet.visible {
+    transform: translateY(0);
+  }
+
+  .bottom-sheet-header {
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+    border-bottom: 1px solid var(--border-primary);
+    text-align: center;
+    position: relative;
+  }
+
+  .bottom-sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border-secondary);
+    border-radius: var(--radius-full);
+    margin: 0 auto var(--spacing-md);
+  }
+
+  .bottom-sheet-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .bottom-sheet-close {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 32px;
+    height: 32px;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-sheet-content {
+    padding: var(--spacing-lg);
+    max-width: 1000px;
+    margin: 0 auto;
   }
 
   /* ========== ADVANCED OPTIONS ========== */
@@ -1653,10 +1667,7 @@
     Pencari Bib Pro — Bottom floating search implementation
     =========================================================== */
 (() => {
-  // --- Mobile Detection ---
-  const isMobile = () => window.innerWidth <= 768 && window.innerHeight <= 800;
-  
-  // --- Elemen UI Desktop ---
+  // --- Elemen UI Desktop (now hidden) ---
   const bibInput = document.getElementById('bibInput');
   const clearInput = document.getElementById('clearInput');
   const minDigits = document.getElementById('minDigits');
@@ -1665,7 +1676,7 @@
   const exactOnly = document.getElementById('exactOnly');
   const sortMode = document.getElementById('sortMode');
   
-  // --- Elemen UI Mobile ---
+  // --- Elemen UI Bottom Search (now universal) ---
   const bottomSearch = document.getElementById('bottomSearch');
   const bottomBibInput = document.getElementById('bottomBibInput');
   const bottomClearInput = document.getElementById('bottomClearInput');
@@ -1673,20 +1684,20 @@
   const bottomSheet = document.getElementById('bottomSheet');
   const bottomSheetClose = document.getElementById('bottomSheetClose');
   
-  // Mobile settings elements
-  const mobileMinDigits = document.getElementById('mobileMinDigits');
-  const mobileIgnoreZeros = document.getElementById('mobileIgnoreZeros');
-  const mobileSameLen = document.getElementById('mobileSameLen');
-  const mobileExactOnly = document.getElementById('mobileExactOnly');
-  const mobileSortMode = document.getElementById('mobileSortMode');
-  const mobileFilePicker = document.getElementById('mobileFilePicker');
-  const mobileBrowseBtn = document.getElementById('mobileBrowseBtn');
-  const mobileClearCache = document.getElementById('mobileClearCache');
+  // Settings elements (now universal)
+  const settingsMinDigits = document.getElementById('mobileMinDigits');
+  const settingsIgnoreZeros = document.getElementById('mobileIgnoreZeros');
+  const settingsSameLen = document.getElementById('mobileSameLen');
+  const settingsExactOnly = document.getElementById('mobileExactOnly');
+  const settingsSortMode = document.getElementById('mobileSortMode');
+  const settingsFilePicker = document.getElementById('mobileFilePicker');
+  const settingsBrowseBtn = document.getElementById('mobileBrowseBtn');
+  const settingsClearCache = document.getElementById('mobileClearCache');
   
-  // Mobile status pills
-  const mobileCountPill = document.getElementById('mobileCountPill');
-  const mobileDatasetPill = document.getElementById('mobileDatasetPill');
-  const mobileCachePill = document.getElementById('mobileCachePill');
+  // Status pills (now universal)
+  const universalCountPill = document.getElementById('mobileCountPill');
+  const universalDatasetPill = document.getElementById('mobileDatasetPill');
+  const universalCachePill = document.getElementById('mobileCachePill');
   
   // --- Elemen UI Umum ---
   const filePicker = document.getElementById('filePicker');
@@ -1721,85 +1732,28 @@
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
 
-  // --- Mobile Layout Setup ---
-  function setupMobileLayout() {
-    if (isMobile()) {
-      document.body.classList.add('mobile-mode');
-      bottomSearch.classList.add('visible');
-      
-      // Sync initial values
-      syncMobileSettings();
-    } else {
-      document.body.classList.remove('mobile-mode');
-      bottomSearch.classList.remove('visible');
-      bottomSheet.classList.remove('visible');
-    }
-  }
-
-  // --- Mobile Settings Sync ---
-  function syncMobileSettings() {
-    if (isMobile()) {
-      // Sync from desktop to mobile
-      mobileMinDigits.value = minDigits.value;
-      mobileIgnoreZeros.checked = ignoreZeros.checked;
-      mobileSameLen.checked = sameLen.checked;
-      mobileExactOnly.checked = exactOnly.checked;
-      mobileSortMode.value = sortMode.value;
-      
-      // Sync pills
-      mobileCountPill.textContent = countPill.textContent;
-      mobileDatasetPill.textContent = datasetPill.textContent;
-      mobileCachePill.textContent = cachePill.textContent;
-    }
-  }
-
-  function syncDesktopSettings() {
-    if (isMobile()) {
-      // Sync from mobile to desktop
-      minDigits.value = mobileMinDigits.value;
-      ignoreZeros.checked = mobileIgnoreZeros.checked;
-      sameLen.checked = mobileSameLen.checked;
-      exactOnly.checked = mobileExactOnly.checked;
-      sortMode.value = mobileSortMode.value;
-    }
-  }
-
-  // --- Get Active Input ---
-  function getActiveInput() {
-    return isMobile() ? bottomBibInput : bibInput;
-  }
-
+  // --- Settings Sync Functions ---
   function getCurrentSettings() {
-    if (isMobile()) {
-      return {
-        minDigits: parseInt(mobileMinDigits.value || '2', 10),
-        ignoreZeros: mobileIgnoreZeros.checked,
-        sameLen: mobileSameLen.checked,
-        exactOnly: mobileExactOnly.checked,
-        sortMode: mobileSortMode.value
-      };
-    } else {
-      return {
-        minDigits: parseInt(minDigits.value || '2', 10),
-        ignoreZeros: ignoreZeros.checked,
-        sameLen: sameLen.checked,
-        exactOnly: exactOnly.checked,
-        sortMode: sortMode.value
-      };
-    }
+    return {
+      minDigits: parseInt(settingsMinDigits.value || '2', 10),
+      ignoreZeros: settingsIgnoreZeros.checked,
+      sameLen: settingsSameLen.checked,
+      exactOnly: settingsExactOnly.checked,
+      sortMode: settingsSortMode.value
+    };
   }
 
   // --- Update Pills ---
   function updatePills(type, content) {
     if (type === 'count') {
       countPill.textContent = content;
-      mobileCountPill.textContent = content;
+      universalCountPill.textContent = content;
     } else if (type === 'dataset') {
       datasetPill.textContent = content;
-      mobileDatasetPill.textContent = content;
+      universalDatasetPill.textContent = content;
     } else if (type === 'cache') {
       cachePill.textContent = content;
-      mobileCachePill.textContent = content;
+      universalCachePill.textContent = content;
     } else if (type === 'rule') {
       rulePill.textContent = content;
     }
@@ -1834,24 +1788,19 @@
   function applyPrefs() {
     if (prefs.theme) document.documentElement.setAttribute('data-theme', prefs.theme);
     if (typeof prefs.minDigits === 'number') {
-      minDigits.value = prefs.minDigits;
-      mobileMinDigits.value = prefs.minDigits;
+      settingsMinDigits.value = prefs.minDigits;
     }
     if (typeof prefs.ignoreZeros === 'boolean') {
-      ignoreZeros.checked = prefs.ignoreZeros;
-      mobileIgnoreZeros.checked = prefs.ignoreZeros;
+      settingsIgnoreZeros.checked = prefs.ignoreZeros;
     }
     if (typeof prefs.sameLen === 'boolean') {
-      sameLen.checked = prefs.sameLen;
-      mobileSameLen.checked = prefs.sameLen;
+      settingsSameLen.checked = prefs.sameLen;
     }
     if (typeof prefs.exactOnly === 'boolean') {
-      exactOnly.checked = prefs.exactOnly;
-      mobileExactOnly.checked = prefs.exactOnly;
+      settingsExactOnly.checked = prefs.exactOnly;
     }
     if (typeof prefs.sortMode === 'string') {
-      sortMode.value = prefs.sortMode;
-      mobileSortMode.value = prefs.sortMode;
+      settingsSortMode.value = prefs.sortMode;
     }
     updateThemeToggle();
   }
@@ -1861,20 +1810,18 @@
     themeToggle.textContent = isDark ? '☀️' : '🌙';
   }
 
-  // Header scroll behavior - simplified and more aggressive
+  // Header scroll behavior - simplified for universal layout
   let lastScrollY = 0;
   let isCompact = false;
   let scrollTimeout = null;
   
-  // More aggressive thresholds to prevent oscillation
-  const COMPACT_THRESHOLD = 300;   // Scroll down to compact
-  const EXPAND_THRESHOLD = 50;     // Must scroll very close to top to expand
-  const UPDATE_DELAY = 100;        // Delay all updates to prevent rapid changes
+  const COMPACT_THRESHOLD = 300;
+  const EXPAND_THRESHOLD = 50;
+  const UPDATE_DELAY = 100;
 
   function updateHeaderState() {
     const currentScrollY = window.scrollY;
     
-    // Simple state logic with large hysteresis gap
     let shouldBeCompact;
     
     if (currentScrollY > COMPACT_THRESHOLD) {
@@ -1882,28 +1829,19 @@
     } else if (currentScrollY < EXPAND_THRESHOLD) {
       shouldBeCompact = false;
     } else {
-      // In the middle zone - maintain current state
       shouldBeCompact = isCompact;
     }
     
-    // Only change state if different and apply immediately
     if (shouldBeCompact !== isCompact) {
       isCompact = shouldBeCompact;
       header.classList.toggle('compact', isCompact);
     }
     
-    // Back to top button
     toTop.classList.toggle('visible', currentScrollY > 600);
   }
 
   function handleScroll() {
-    // Don't handle scroll on mobile with bottom search
-    if (isMobile()) return;
-    
-    // Clear any pending updates
     clearTimeout(scrollTimeout);
-    
-    // Debounce the update to prevent rapid changes
     scrollTimeout = setTimeout(() => {
       updateHeaderState();
       lastScrollY = window.scrollY;
@@ -1989,34 +1927,18 @@
   let renderedCount = 0;
   let touchStartX = 0, touchEndX = 0;
   const SWIPE_THRESHOLD = 50;
-
   // Show/hide clear button based on input
   function updateClearButton() {
-    const input = getActiveInput();
-    const clearBtn = isMobile() ? bottomClearInput : clearInput;
-    
-    if (input.value.trim()) {
-      clearBtn.classList.add('visible');
+    if (bottomBibInput.value.trim()) {
+      bottomClearInput.classList.add('visible');
     } else {
-      clearBtn.classList.remove('visible');
-    }
-  }
-
-  // Sync inputs
-  function syncInputs(source) {
-    if (source === 'desktop') {
-      bottomBibInput.value = bibInput.value;
-    } else {
-      bibInput.value = bottomBibInput.value;
+      bottomClearInput.classList.remove('visible');
     }
   }
 
   (async function boot() {
     idb = await idbOpen();
     updatePills('cache', idb ? 'cache: siap' : 'cache: cadangan localStorage');
-    
-    // Setup mobile layout
-    setupMobileLayout();
     
     try {
       setStatus('Mengambil ./bib_export.json…', false, true);
@@ -2115,8 +2037,7 @@
   };
 
   function refresh() {
-    const input = getActiveInput();
-    const raw = digitsOnly(input.value);
+    const raw = digitsOnly(bottomBibInput.value);
     const settings = getCurrentSettings();
     const minLen = Math.max(1, settings.minDigits);
 
@@ -2280,10 +2201,8 @@
       return;
     }
     
-    const input = getActiveInput();
-    input.value = '';
+    bottomBibInput.value = '';
     updateClearButton();
-    syncInputs(isMobile() ? 'mobile' : 'desktop');
     
     grid.innerHTML = '';
     noMatchesEl.hidden = true;
@@ -2352,20 +2271,16 @@
     card.appendChild(countChip);
 
     card.addEventListener('click', () => {
-        const input = getActiveInput();
-        input.value = bib;
+        bottomBibInput.value = bib;
         updateClearButton();
-        syncInputs(isMobile() ? 'mobile' : 'desktop');
         refresh();
     });
     
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        const input = getActiveInput();
-        input.value = bib;
+        bottomBibInput.value = bib;
         updateClearButton();
-        syncInputs(isMobile() ? 'mobile' : 'desktop');
         refresh();
       }
     });
@@ -2501,12 +2416,10 @@
   // Bottom sheet handlers
   bottomSettingsBtn.addEventListener('click', () => {
     bottomSheet.classList.add('visible');
-    syncMobileSettings();
   });
 
   bottomSheetClose.addEventListener('click', () => {
     bottomSheet.classList.remove('visible');
-    syncDesktopSettings();
     savePrefs();
   });
 
@@ -2514,7 +2427,6 @@
   bottomSheet.addEventListener('click', (e) => {
     if (e.target === bottomSheet) {
       bottomSheet.classList.remove('visible');
-      syncDesktopSettings();
       savePrefs();
     }
   });
@@ -2528,23 +2440,8 @@
     }, 150); 
   };
 
-  // Desktop input handlers
-  bibInput.addEventListener('input', () => {
-    syncInputs('desktop');
-    updateClearButton();
-    trigger();
-  });
-  
-  bibInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      trigger();
-    }
-  });
-
-  // Mobile input handlers
+  // Universal input handlers
   bottomBibInput.addEventListener('input', () => {
-    syncInputs('mobile');
     updateClearButton();
     trigger();
   });
@@ -2557,34 +2454,14 @@
   });
 
   // Settings change handlers
-  [minDigits, ignoreZeros, sameLen, exactOnly, sortMode].forEach(el => {
+  [settingsMinDigits, settingsIgnoreZeros, settingsSameLen, settingsExactOnly, settingsSortMode].forEach(el => {
     el.addEventListener('input', trigger);
     el.addEventListener('change', trigger);
   });
-
-  [mobileMinDigits, mobileIgnoreZeros, mobileSameLen, mobileExactOnly, mobileSortMode].forEach(el => {
-    el.addEventListener('input', () => {
-      syncDesktopSettings();
-      trigger();
-    });
-    el.addEventListener('change', () => {
-      syncDesktopSettings();
-      trigger();
-    });
-  });
   
-  // Clear button handlers
-  clearInput.addEventListener('click', () => { 
-    bibInput.value = ''; 
-    bottomBibInput.value = '';
-    updateClearButton();
-    trigger(); 
-    bibInput.focus(); 
-  });
-
+  // Clear button handler
   bottomClearInput.addEventListener('click', () => { 
-    bottomBibInput.value = ''; 
-    bibInput.value = '';
+    bottomBibInput.value = '';
     updateClearButton();
     trigger(); 
     bottomBibInput.focus(); 
@@ -2611,7 +2488,7 @@
     ev.target.value = '';
   });
 
-  mobileFilePicker.addEventListener('change', async (ev) => {
+  settingsFilePicker.addEventListener('change', async (ev) => {
     const file = ev.target.files?.[0];
     await handleFileChange(file);
     ev.target.value = '';
@@ -2619,10 +2496,10 @@
 
   // Browse and cache handlers
   browseBtn.addEventListener('click', browseAll);
-  mobileBrowseBtn.addEventListener('click', browseAll);
+  settingsBrowseBtn.addEventListener('click', browseAll);
   
   clearCache.addEventListener('click', async () => { await cacheClear(); });
-  mobileClearCache.addEventListener('click', async () => { await cacheClear(); });
+  settingsClearCache.addEventListener('click', async () => { await cacheClear(); });
   
   themeToggle.addEventListener('click', () => {
     const cur = document.documentElement.getAttribute('data-theme');
@@ -2645,11 +2522,6 @@
   
   toTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // Resize handler for mobile layout
-  window.addEventListener('resize', () => {
-    setupMobileLayout();
   });
 
   // Export CSV functionality
@@ -2697,7 +2569,6 @@
 
   // Initialize
   updateClearButton();
-  setupMobileLayout();
 })();
 </script>
 </body>
