@@ -2,7 +2,7 @@
 <html lang="id" data-theme="dark">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Pencari Bib Pro — cepat, rapi, profesional</title>
 <meta name="color-scheme" content="dark light">
 <style>
@@ -61,6 +61,8 @@
     --transition-fast: 150ms ease;
     --transition-normal: 250ms ease;
     --transition-slow: 350ms ease;
+
+    --safe-area-bottom: env(safe-area-inset-bottom, 0);
   }
 
   [data-theme="light"] {
@@ -112,6 +114,11 @@
     line-height: 1.6;
     min-height: 100vh;
     transition: background-color var(--transition-normal), color var(--transition-normal);
+  }
+
+  /* ========== MOBILE DETECTION ========== */
+  .is-mobile {
+    --is-mobile: 1;
   }
 
   /* ========== HEADER & NAVIGATION ========== */
@@ -210,6 +217,37 @@
     padding: 0;
   }
 
+  /* ========== MOBILE HEADER MODIFICATIONS ========== */
+  @media (max-width: 768px) and (max-height: 800px) {
+    .header {
+      position: static;
+      background: var(--bg-primary);
+      border-bottom: none;
+      backdrop-filter: none;
+    }
+    
+    .header-content {
+      padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .header-top {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .brand {
+      font-size: var(--font-size-lg);
+    }
+    
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .search-section {
+      display: none; /* Hidden on mobile - will use bottom search */
+    }
+  }
+
   /* ========== SEARCH SECTION ========== */
   .search-section {
     background: var(--bg-secondary);
@@ -300,6 +338,157 @@
     background: var(--surface-hover);
     color: var(--text-secondary);
     transform: translateY(-50%) scale(1.05);
+  }
+
+  /* ========== BOTTOM FLOATING SEARCH (MOBILE) ========== */
+  .bottom-search {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--surface-primary);
+    border-top: 1px solid var(--border-primary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    padding-bottom: calc(var(--spacing-sm) + var(--safe-area-bottom));
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px) saturate(180%);
+    transform: translateY(100%);
+    transition: transform var(--transition-normal);
+    display: none;
+  }
+
+  .bottom-search.visible {
+    transform: translateY(0);
+  }
+
+  .bottom-search-container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .bottom-search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .bottom-search-input {
+    flex: 1;
+    height: 48px;
+    padding: 0 48px 0 44px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-primary);
+    border-radius: var(--radius-full);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    outline: none;
+    transition: all var(--transition-fast);
+  }
+
+  .bottom-search-input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .bottom-search-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .bottom-search-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    color: var(--text-muted);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .bottom-clear-button {
+    position: absolute;
+    right: var(--spacing-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .bottom-clear-button.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .bottom-settings-btn {
+    width: 48px;
+    height: 48px;
+    background: var(--accent-primary);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .bottom-settings-btn:hover {
+    background: var(--accent-hover);
+    transform: scale(1.05);
+  }
+
+  /* ========== MOBILE LAYOUT ADJUSTMENTS ========== */
+  @media (max-width: 768px) and (max-height: 800px) {
+    body.mobile-mode {
+      padding-bottom: 80px; /* Space for bottom search */
+    }
+    
+    .bottom-search {
+      display: block;
+    }
+    
+    .main {
+      padding-top: 0;
+    }
+    
+    .main-toolbar {
+      margin-top: var(--spacing-md);
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .toolbar-section {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .results-grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-sm);
+    }
+    
+    .result-card {
+      padding: var(--spacing-md);
+    }
+    
+    .fab {
+      bottom: 90px; /* Above bottom search */
+    }
   }
 
   /* ========== ADVANCED OPTIONS ========== */
@@ -965,6 +1154,68 @@
     to { transform: rotate(360deg); }
   }
 
+  /* ========== BOTTOM SHEET MODAL ========== */
+  .bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 300;
+    background: var(--surface-primary);
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+    max-height: 80vh;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform var(--transition-normal);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .bottom-sheet.visible {
+    transform: translateY(0);
+  }
+
+  .bottom-sheet-header {
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+    border-bottom: 1px solid var(--border-primary);
+    text-align: center;
+    position: relative;
+  }
+
+  .bottom-sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border-secondary);
+    border-radius: var(--radius-full);
+    margin: 0 auto var(--spacing-md);
+  }
+
+  .bottom-sheet-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .bottom-sheet-close {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 32px;
+    height: 32px;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-sheet-content {
+    padding: var(--spacing-lg);
+  }
+
   /* ========== RESPONSIVE DESIGN ========== */
   @media (max-width: 1024px) {
     .results-grid {
@@ -1084,7 +1335,9 @@
   @media print {
     .header,
     .fab,
-    .viewer-modal {
+    .viewer-modal,
+    .bottom-search,
+    .bottom-sheet {
       display: none;
     }
     
@@ -1123,7 +1376,7 @@
         </div>
       </div>
 
-      <!-- Search Section -->
+      <!-- Search Section (Desktop) -->
       <div class="search-section" role="search">
         <div class="search-container">
           <div class="search-input-wrapper">
@@ -1209,6 +1462,105 @@
       </div>
     </div>
   </header>
+
+  <!-- Bottom Floating Search (Mobile) -->
+  <div id="bottomSearch" class="bottom-search">
+    <div class="bottom-search-container">
+      <div class="bottom-search-input-wrapper">
+        <div class="bottom-search-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/>
+          </svg>
+        </div>
+        <input 
+          id="bottomBibInput" 
+          type="text" 
+          inputmode="numeric" 
+          autocomplete="off" 
+          placeholder="Cari nomor bib..." 
+          aria-label="Cari nomor bib" 
+          class="bottom-search-input"
+        />
+        <button id="bottomClearInput" class="bottom-clear-button" title="Bersihkan input" aria-label="Bersihkan">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+        <button id="bottomSettingsBtn" class="bottom-settings-btn" title="Pengaturan" aria-label="Buka pengaturan">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Sheet for Mobile Settings -->
+  <div id="bottomSheet" class="bottom-sheet">
+    <div class="bottom-sheet-header">
+      <div class="bottom-sheet-handle"></div>
+      <div class="bottom-sheet-title">Pengaturan Pencarian</div>
+      <button id="bottomSheetClose" class="bottom-sheet-close" aria-label="Tutup">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="bottom-sheet-content">
+      <div class="options-grid">
+        <div class="option-group">
+          <div class="option-group-title">Pengaturan Pencarian</div>
+          <div class="form-field">
+            <label for="mobileMinDigits" class="form-label">Minimal digit untuk pencarian</label>
+            <input id="mobileMinDigits" type="number" min="1" step="1" value="2" class="form-input" />
+          </div>
+          <div class="form-field">
+            <label for="mobileSortMode" class="form-label">Urutkan hasil</label>
+            <select id="mobileSortMode" class="form-select">
+              <option value="best">Terbaik (jarak → kepercayaan → nama)</option>
+              <option value="conf">Kepercayaan tertinggi</option>
+              <option value="name">Nama file (A→Z)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="option-group">
+          <div class="option-group-title">Aturan Pencocokan</div>
+          <label class="switch-field" title="Anggap 04 dan 4 setara saat pencocokan">
+            <input id="mobileIgnoreZeros" type="checkbox" checked class="switch-input" />
+            <span class="switch-label">Abaikan nol di depan</span>
+          </label>
+          <label class="switch-field" title="Wajibkan panjang bib kandidat sama dengan input">
+            <input id="mobileSameLen" type="checkbox" class="switch-input" />
+            <span class="switch-label">Wajibkan panjang sama</span>
+          </label>
+          <label class="switch-field" title="Hanya tampilkan kecocokan tepat (jarak 0)">
+            <input id="mobileExactOnly" type="checkbox" class="switch-input" />
+            <span class="switch-label">Hanya cocok tepat</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Mobile Action Buttons -->
+      <div style="margin-top: var(--spacing-xl); display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+        <label class="btn" style="flex: 1; min-width: 140px;" title="Muat dataset dari berkas JSON">
+          <input id="mobileFilePicker" type="file" accept=".json,application/json" hidden />
+          📁 Pilih JSON
+        </label>
+        <button id="mobileBrowseBtn" class="btn" style="flex: 1; min-width: 140px;">📋 Browse Bib</button>
+        <button id="mobileClearCache" class="btn" style="flex: 1; min-width: 140px;">🗑️ Hapus Cache</button>
+      </div>
+
+      <!-- Status pills in mobile -->
+      <div style="margin-top: var(--spacing-lg);">
+        <div class="status-pills" style="justify-content: center;">
+          <div class="pill primary" id="mobileCountPill">0 hasil</div>
+          <div class="pill" id="mobileDatasetPill">dataset: belum dimuat</div>
+          <div class="pill" id="mobileCachePill">cache: —</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Main Content -->
   <main class="main">
@@ -1298,10 +1650,13 @@
 
 <script>
 /* ===========================================================
-    Pencari Bib Pro — Clean scrolling header implementation
+    Pencari Bib Pro — Bottom floating search implementation
     =========================================================== */
 (() => {
-  // --- Elemen UI ---
+  // --- Mobile Detection ---
+  const isMobile = () => window.innerWidth <= 768 && window.innerHeight <= 800;
+  
+  // --- Elemen UI Desktop ---
   const bibInput = document.getElementById('bibInput');
   const clearInput = document.getElementById('clearInput');
   const minDigits = document.getElementById('minDigits');
@@ -1309,6 +1664,31 @@
   const sameLen = document.getElementById('sameLen');
   const exactOnly = document.getElementById('exactOnly');
   const sortMode = document.getElementById('sortMode');
+  
+  // --- Elemen UI Mobile ---
+  const bottomSearch = document.getElementById('bottomSearch');
+  const bottomBibInput = document.getElementById('bottomBibInput');
+  const bottomClearInput = document.getElementById('bottomClearInput');
+  const bottomSettingsBtn = document.getElementById('bottomSettingsBtn');
+  const bottomSheet = document.getElementById('bottomSheet');
+  const bottomSheetClose = document.getElementById('bottomSheetClose');
+  
+  // Mobile settings elements
+  const mobileMinDigits = document.getElementById('mobileMinDigits');
+  const mobileIgnoreZeros = document.getElementById('mobileIgnoreZeros');
+  const mobileSameLen = document.getElementById('mobileSameLen');
+  const mobileExactOnly = document.getElementById('mobileExactOnly');
+  const mobileSortMode = document.getElementById('mobileSortMode');
+  const mobileFilePicker = document.getElementById('mobileFilePicker');
+  const mobileBrowseBtn = document.getElementById('mobileBrowseBtn');
+  const mobileClearCache = document.getElementById('mobileClearCache');
+  
+  // Mobile status pills
+  const mobileCountPill = document.getElementById('mobileCountPill');
+  const mobileDatasetPill = document.getElementById('mobileDatasetPill');
+  const mobileCachePill = document.getElementById('mobileCachePill');
+  
+  // --- Elemen UI Umum ---
   const filePicker = document.getElementById('filePicker');
   const browseBtn = document.getElementById('browseBtn');
   const exportCsv = document.getElementById('exportCsv');
@@ -1341,6 +1721,90 @@
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
 
+  // --- Mobile Layout Setup ---
+  function setupMobileLayout() {
+    if (isMobile()) {
+      document.body.classList.add('mobile-mode');
+      bottomSearch.classList.add('visible');
+      
+      // Sync initial values
+      syncMobileSettings();
+    } else {
+      document.body.classList.remove('mobile-mode');
+      bottomSearch.classList.remove('visible');
+      bottomSheet.classList.remove('visible');
+    }
+  }
+
+  // --- Mobile Settings Sync ---
+  function syncMobileSettings() {
+    if (isMobile()) {
+      // Sync from desktop to mobile
+      mobileMinDigits.value = minDigits.value;
+      mobileIgnoreZeros.checked = ignoreZeros.checked;
+      mobileSameLen.checked = sameLen.checked;
+      mobileExactOnly.checked = exactOnly.checked;
+      mobileSortMode.value = sortMode.value;
+      
+      // Sync pills
+      mobileCountPill.textContent = countPill.textContent;
+      mobileDatasetPill.textContent = datasetPill.textContent;
+      mobileCachePill.textContent = cachePill.textContent;
+    }
+  }
+
+  function syncDesktopSettings() {
+    if (isMobile()) {
+      // Sync from mobile to desktop
+      minDigits.value = mobileMinDigits.value;
+      ignoreZeros.checked = mobileIgnoreZeros.checked;
+      sameLen.checked = mobileSameLen.checked;
+      exactOnly.checked = mobileExactOnly.checked;
+      sortMode.value = mobileSortMode.value;
+    }
+  }
+
+  // --- Get Active Input ---
+  function getActiveInput() {
+    return isMobile() ? bottomBibInput : bibInput;
+  }
+
+  function getCurrentSettings() {
+    if (isMobile()) {
+      return {
+        minDigits: parseInt(mobileMinDigits.value || '2', 10),
+        ignoreZeros: mobileIgnoreZeros.checked,
+        sameLen: mobileSameLen.checked,
+        exactOnly: mobileExactOnly.checked,
+        sortMode: mobileSortMode.value
+      };
+    } else {
+      return {
+        minDigits: parseInt(minDigits.value || '2', 10),
+        ignoreZeros: ignoreZeros.checked,
+        sameLen: sameLen.checked,
+        exactOnly: exactOnly.checked,
+        sortMode: sortMode.value
+      };
+    }
+  }
+
+  // --- Update Pills ---
+  function updatePills(type, content) {
+    if (type === 'count') {
+      countPill.textContent = content;
+      mobileCountPill.textContent = content;
+    } else if (type === 'dataset') {
+      datasetPill.textContent = content;
+      mobileDatasetPill.textContent = content;
+    } else if (type === 'cache') {
+      cachePill.textContent = content;
+      mobileCachePill.textContent = content;
+    } else if (type === 'rule') {
+      rulePill.textContent = content;
+    }
+  }
+
   // --- State & Penyimpanan ---
   const DB_NAME = 'bib-finder-cache';
   const DB_STORE = 'datasets';
@@ -1358,13 +1822,10 @@
 
   function savePrefs() {
     try {
+      const settings = getCurrentSettings();
       const p = {
         theme: document.documentElement.getAttribute('data-theme') || 'dark',
-        minDigits: parseInt(minDigits.value || '2', 10),
-        ignoreZeros: ignoreZeros.checked,
-        sameLen: sameLen.checked,
-        exactOnly: exactOnly.checked,
-        sortMode: sortMode.value
+        ...settings
       };
       localStorage.setItem(PREF_KEY, JSON.stringify(p));
     } catch {}
@@ -1372,11 +1833,26 @@
 
   function applyPrefs() {
     if (prefs.theme) document.documentElement.setAttribute('data-theme', prefs.theme);
-    if (typeof prefs.minDigits === 'number') minDigits.value = prefs.minDigits;
-    if (typeof prefs.ignoreZeros === 'boolean') ignoreZeros.checked = prefs.ignoreZeros;
-    if (typeof prefs.sameLen === 'boolean') sameLen.checked = prefs.sameLen;
-    if (typeof prefs.exactOnly === 'boolean') exactOnly.checked = prefs.exactOnly;
-    if (typeof prefs.sortMode === 'string') sortMode.value = prefs.sortMode;
+    if (typeof prefs.minDigits === 'number') {
+      minDigits.value = prefs.minDigits;
+      mobileMinDigits.value = prefs.minDigits;
+    }
+    if (typeof prefs.ignoreZeros === 'boolean') {
+      ignoreZeros.checked = prefs.ignoreZeros;
+      mobileIgnoreZeros.checked = prefs.ignoreZeros;
+    }
+    if (typeof prefs.sameLen === 'boolean') {
+      sameLen.checked = prefs.sameLen;
+      mobileSameLen.checked = prefs.sameLen;
+    }
+    if (typeof prefs.exactOnly === 'boolean') {
+      exactOnly.checked = prefs.exactOnly;
+      mobileExactOnly.checked = prefs.exactOnly;
+    }
+    if (typeof prefs.sortMode === 'string') {
+      sortMode.value = prefs.sortMode;
+      mobileSortMode.value = prefs.sortMode;
+    }
     updateThemeToggle();
   }
 
@@ -1384,84 +1860,6 @@
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     themeToggle.textContent = isDark ? '☀️' : '🌙';
   }
-
-  // Cache functions
-  async function idbOpen() {
-    return new Promise((resolve) => {
-      if (!('indexedDB' in window)) return resolve(null);
-      const req = indexedDB.open(DB_NAME, 1);
-      req.onupgradeneeded = () => {
-        const db = req.result;
-        if (!db.objectStoreNames.contains(DB_STORE)) db.createObjectStore(DB_STORE, { keyPath: 'key' });
-      };
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => resolve(null);
-    });
-  }
-
-  async function cachePut(payload) {
-    const entry = { key: DB_KEY, ts: Date.now(), ...payload };
-    if (idb) {
-      try {
-        await new Promise((resolve, reject) => {
-          const tx = idb.transaction(DB_STORE, 'readwrite');
-          tx.oncomplete = resolve; tx.onerror = () => reject(tx.error);
-          tx.objectStore(DB_STORE).put(entry);
-        });
-        cachePill.textContent = `cache: disimpan (${new Date(entry.ts).toLocaleString()})`;
-        return true;
-      } catch {}
-    }
-    try {
-      localStorage.setItem('bibFinderCache', JSON.stringify(entry));
-      cachePill.textContent = `cache: disimpan (localStorage)`; return true;
-    } catch {
-      cachePill.textContent = `cache: gagal menyimpan`; return false;
-    }
-  }
-
-  async function cacheGet() {
-    if (idb) {
-      try {
-        const result = await new Promise((resolve) => {
-          const tx = idb.transaction(DB_STORE, 'readonly');
-          tx.onerror = () => resolve(null);
-          const req = tx.objectStore(DB_STORE).get(DB_KEY);
-          req.onsuccess = () => resolve(req.result || null);
-          req.onerror = () => resolve(null);
-        });
-        if (result) return result;
-      } catch {}
-    }
-    try { const raw = localStorage.getItem('bibFinderCache'); return raw ? JSON.parse(raw) : null; }
-    catch { return null; }
-  }
-
-  async function cacheClear() {
-    let ok = false;
-    if (idb) {
-      try {
-        await new Promise((resolve) => {
-          const tx = idb.transaction(DB_STORE, 'readwrite');
-          tx.oncomplete = resolve; tx.onerror = () => resolve();
-          tx.objectStore(DB_STORE).delete(DB_KEY);
-        });
-        ok = true;
-      } catch {}
-    }
-    try { localStorage.removeItem('bibFinderCache'); ok = true; } catch {}
-    cachePill.textContent = ok ? 'cache: dihapus' : 'cache: gagal dihapus';
-  }
-
-  let DATA = [];
-  let BROWSE_INDEX = new Map();
-  let LAST_RESULTS = [];
-  let LAST_QUERY_DIGITS = '';
-  let CURRENT_INDEX = -1;
-  const RENDER_BATCH = 50;
-  let renderedCount = 0;
-  let touchStartX = 0, touchEndX = 0;
-  const SWIPE_THRESHOLD = 50;
 
   // Header scroll behavior - simplified and more aggressive
   let lastScrollY = 0;
@@ -1499,6 +1897,9 @@
   }
 
   function handleScroll() {
+    // Don't handle scroll on mobile with bottom search
+    if (isMobile()) return;
+    
     // Clear any pending updates
     clearTimeout(scrollTimeout);
     
@@ -1509,18 +1910,114 @@
     }, UPDATE_DELAY);
   }
 
+  // Cache functions
+  async function idbOpen() {
+    return new Promise((resolve) => {
+      if (!('indexedDB' in window)) return resolve(null);
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(DB_STORE)) db.createObjectStore(DB_STORE, { keyPath: 'key' });
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(null);
+    });
+  }
+
+  async function cachePut(payload) {
+    const entry = { key: DB_KEY, ts: Date.now(), ...payload };
+    if (idb) {
+      try {
+        await new Promise((resolve, reject) => {
+          const tx = idb.transaction(DB_STORE, 'readwrite');
+          tx.oncomplete = resolve; tx.onerror = () => reject(tx.error);
+          tx.objectStore(DB_STORE).put(entry);
+        });
+        updatePills('cache', `cache: disimpan (${new Date(entry.ts).toLocaleString()})`);
+        return true;
+      } catch {}
+    }
+    try {
+      localStorage.setItem('bibFinderCache', JSON.stringify(entry));
+      updatePills('cache', `cache: disimpan (localStorage)`); 
+      return true;
+    } catch {
+      updatePills('cache', `cache: gagal menyimpan`); 
+      return false;
+    }
+  }
+
+  async function cacheGet() {
+    if (idb) {
+      try {
+        const result = await new Promise((resolve) => {
+          const tx = idb.transaction(DB_STORE, 'readonly');
+          tx.onerror = () => resolve(null);
+          const req = tx.objectStore(DB_STORE).get(DB_KEY);
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => resolve(null);
+        });
+        if (result) return result;
+      } catch {}
+    }
+    try { const raw = localStorage.getItem('bibFinderCache'); return raw ? JSON.parse(raw) : null; }
+    catch { return null; }
+  }
+
+  async function cacheClear() {
+    let ok = false;
+    if (idb) {
+      try {
+        await new Promise((resolve) => {
+          const tx = idb.transaction(DB_STORE, 'readwrite');
+          tx.oncomplete = resolve; tx.onerror = () => resolve();
+          tx.objectStore(DB_STORE).delete(DB_KEY);
+        });
+        ok = true;
+      } catch {}
+    }
+    try { localStorage.removeItem('bibFinderCache'); ok = true; } catch {}
+    updatePills('cache', ok ? 'cache: dihapus' : 'cache: gagal dihapus');
+  }
+
+  let DATA = [];
+  let BROWSE_INDEX = new Map();
+  let LAST_RESULTS = [];
+  let LAST_QUERY_DIGITS = '';
+  let CURRENT_INDEX = -1;
+  const RENDER_BATCH = 50;
+  let renderedCount = 0;
+  let touchStartX = 0, touchEndX = 0;
+  const SWIPE_THRESHOLD = 50;
+
   // Show/hide clear button based on input
   function updateClearButton() {
-    if (bibInput.value.trim()) {
-      clearInput.classList.add('visible');
+    const input = getActiveInput();
+    const clearBtn = isMobile() ? bottomClearInput : clearInput;
+    
+    if (input.value.trim()) {
+      clearBtn.classList.add('visible');
     } else {
-      clearInput.classList.remove('visible');
+      clearBtn.classList.remove('visible');
+    }
+  }
+
+  // Sync inputs
+  function syncInputs(source) {
+    if (source === 'desktop') {
+      bottomBibInput.value = bibInput.value;
+    } else {
+      bibInput.value = bottomBibInput.value;
     }
   }
 
   (async function boot() {
     idb = await idbOpen();
-    cachePill.textContent = idb ? 'cache: siap' : 'cache: cadangan localStorage';
+    updatePills('cache', idb ? 'cache: siap' : 'cache: cadangan localStorage');
+    
+    // Setup mobile layout
+    setupMobileLayout();
+    
     try {
       setStatus('Mengambil ./bib_export.json…', false, true);
       const res = await fetch('./bib_export.json', { cache: 'no-store' });
@@ -1551,7 +2048,7 @@
       bib_numbers: Array.isArray(item.bib_numbers) ? item.bib_numbers.filter(x => typeof x === 'string' || typeof x === 'number').map(String) : [],
       confidences: Array.isArray(item.confidences) ? item.confidences : []
     }));
-    datasetPill.textContent = `dataset: ${label} (${DATA.length} foto)`;
+    updatePills('dataset', `dataset: ${label} (${DATA.length} foto)`);
     noDataEl.hidden = true;
     
     setStatus('Mengindeks data untuk browse...', false, true);
@@ -1618,10 +2115,10 @@
   };
 
   function refresh() {
-    const raw = digitsOnly(bibInput.value);
-    const minLen = Math.max(1, parseInt(minDigits.value || '1', 10));
-    const requireSameLen = sameLen.checked;
-    const requireExact = exactOnly.checked;
+    const input = getActiveInput();
+    const raw = digitsOnly(input.value);
+    const settings = getCurrentSettings();
+    const minLen = Math.max(1, settings.minDigits);
 
     grid.innerHTML = '';
     noMatchesEl.hidden = true;
@@ -1632,23 +2129,23 @@
     resultsToolbar.hidden = true;
 
     // Update rule pill
-    if (!requireSameLen && !requireExact) {
-        rulePill.textContent = 'aturan: mengandung input';
-    } else if (requireExact) {
-        rulePill.textContent = 'aturan: cocok tepat';
+    if (!settings.sameLen && !settings.exactOnly) {
+        updatePills('rule', 'aturan: mengandung input');
+    } else if (settings.exactOnly) {
+        updatePills('rule', 'aturan: cocok tepat');
     } else {
-        rulePill.textContent = 'aturan: ≤1 edit';
+        updatePills('rule', 'aturan: ≤1 edit');
     }
 
     if (DATA.length === 0) {
       noDataEl.hidden = false;
-      countPill.textContent = '0 hasil';
+      updatePills('count', '0 hasil');
       return;
     }
     noDataEl.hidden = true;
 
     if (!raw || raw.length < minLen) {
-      countPill.textContent = '0 hasil';
+      updatePills('count', '0 hasil');
       setStatus(`Masukkan minimal ${minLen} digit untuk mencari.`);
       return;
     }
@@ -1666,16 +2163,16 @@
         const candDigits = digitsOnly(candidate);
         if (!candDigits) continue;
 
-        if (!requireSameLen && !requireExact) {
+        if (!settings.sameLen && !settings.exactOnly) {
             if (candDigits.includes(raw)) {
                 const conf = Array.isArray(rec.confidences) ? rec.confidences[idx] ?? null : null;
                 const pseudoDist = (candDigits === raw) ? 0 : 1;
                 matches.push({ bib: candidate, dist: pseudoDist, conf });
             }
         } else {
-            if (requireSameLen && candDigits.length !== raw.length) continue;
-            const d = bestDistance(raw, candDigits, ignoreZeros.checked);
-            if (requireExact ? (d.ok && d.dist === 0) : (d.ok && d.dist <= 1)) {
+            if (settings.sameLen && candDigits.length !== raw.length) continue;
+            const d = bestDistance(raw, candDigits, settings.ignoreZeros);
+            if (settings.exactOnly ? (d.ok && d.dist === 0) : (d.ok && d.dist <= 1)) {
                 const conf = Array.isArray(rec.confidences) ? rec.confidences[idx] ?? null : null;
                 matches.push({ bib: candidate, dist: d.dist, conf });
             }
@@ -1688,16 +2185,16 @@
       }
     }
 
-    if (sortMode.value === 'conf') {
+    if (settings.sortMode === 'conf') {
       results.sort((A, B) => (B.bestConf - A.bestConf) || (A.bestDist - B.bestDist) || String(A.rec.file_name).localeCompare(String(B.rec.file_name)));
-    } else if (sortMode.value === 'name') {
+    } else if (settings.sortMode === 'name') {
       results.sort((A, B) => String(A.rec.file_name).localeCompare(String(B.rec.file_name)) || (A.bestDist - B.bestDist) || (B.bestConf - A.bestConf));
     } else {
       results.sort((A, B) => (A.bestDist - B.bestDist) || (B.bestConf - A.bestConf) || String(A.rec.file_name).localeCompare(String(B.rec.file_name)));
     }
 
     LAST_RESULTS = results;
-    countPill.textContent = `${results.length} hasil`;
+    updatePills('count', `${results.length} hasil`);
     if (results.length === 0) {
       noMatchesEl.hidden = false;
       return;
@@ -1782,13 +2279,18 @@
       setStatus('Muat dataset terlebih dahulu untuk browse.', true, true);
       return;
     }
-    grid.innerHTML = '';
-    bibInput.value = '';
+    
+    const input = getActiveInput();
+    input.value = '';
     updateClearButton();
+    syncInputs(isMobile() ? 'mobile' : 'desktop');
+    
+    grid.innerHTML = '';
     noMatchesEl.hidden = true;
     resultsToolbar.hidden = true;
     renderedCount = 0;
-    const minLen = Math.max(1, parseInt(minDigits.value || '1', 10));
+    const settings = getCurrentSettings();
+    const minLen = Math.max(1, settings.minDigits);
 
     setStatus('Memfilter indeks...', false, true);
     setTimeout(() => {
@@ -1801,7 +2303,7 @@
         
         LAST_RESULTS = filteredBibs.sort((a, b) => a.bib - b.bib);
         
-        countPill.textContent = `${LAST_RESULTS.length} bib terindeks`;
+        updatePills('count', `${LAST_RESULTS.length} bib terindeks`);
         resultsTitle.textContent = 'Indeks Semua Nomor Bib';
         resultsTitle.classList.remove('empty');
         setStatus('');
@@ -1850,16 +2352,20 @@
     card.appendChild(countChip);
 
     card.addEventListener('click', () => {
-        bibInput.value = bib;
+        const input = getActiveInput();
+        input.value = bib;
         updateClearButton();
+        syncInputs(isMobile() ? 'mobile' : 'desktop');
         refresh();
     });
     
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        bibInput.value = bib;
+        const input = getActiveInput();
+        input.value = bib;
         updateClearButton();
+        syncInputs(isMobile() ? 'mobile' : 'desktop');
         refresh();
       }
     });
@@ -1992,6 +2498,27 @@
   prevBtn.addEventListener('click', () => movePreview(-1));
   nextBtn.addEventListener('click', () => movePreview(1));
 
+  // Bottom sheet handlers
+  bottomSettingsBtn.addEventListener('click', () => {
+    bottomSheet.classList.add('visible');
+    syncMobileSettings();
+  });
+
+  bottomSheetClose.addEventListener('click', () => {
+    bottomSheet.classList.remove('visible');
+    syncDesktopSettings();
+    savePrefs();
+  });
+
+  // Click outside to close bottom sheet
+  bottomSheet.addEventListener('click', (e) => {
+    if (e.target === bottomSheet) {
+      bottomSheet.classList.remove('visible');
+      syncDesktopSettings();
+      savePrefs();
+    }
+  });
+
   let debounceTimer = null;
   const trigger = () => { 
     clearTimeout(debounceTimer); 
@@ -2001,7 +2528,9 @@
     }, 150); 
   };
 
+  // Desktop input handlers
   bibInput.addEventListener('input', () => {
+    syncInputs('desktop');
     updateClearButton();
     trigger();
   });
@@ -2013,21 +2542,56 @@
     }
   });
 
-  minDigits.addEventListener('input', trigger);
-  ignoreZeros.addEventListener('change', trigger);
-  sameLen.addEventListener('change', trigger);
-  exactOnly.addEventListener('change', trigger);
-  sortMode.addEventListener('change', trigger);
+  // Mobile input handlers
+  bottomBibInput.addEventListener('input', () => {
+    syncInputs('mobile');
+    updateClearButton();
+    trigger();
+  });
   
+  bottomBibInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      trigger();
+    }
+  });
+
+  // Settings change handlers
+  [minDigits, ignoreZeros, sameLen, exactOnly, sortMode].forEach(el => {
+    el.addEventListener('input', trigger);
+    el.addEventListener('change', trigger);
+  });
+
+  [mobileMinDigits, mobileIgnoreZeros, mobileSameLen, mobileExactOnly, mobileSortMode].forEach(el => {
+    el.addEventListener('input', () => {
+      syncDesktopSettings();
+      trigger();
+    });
+    el.addEventListener('change', () => {
+      syncDesktopSettings();
+      trigger();
+    });
+  });
+  
+  // Clear button handlers
   clearInput.addEventListener('click', () => { 
     bibInput.value = ''; 
+    bottomBibInput.value = '';
     updateClearButton();
     trigger(); 
     bibInput.focus(); 
   });
 
-  filePicker.addEventListener('change', async (ev) => {
-    const file = ev.target.files?.[0]; 
+  bottomClearInput.addEventListener('click', () => { 
+    bottomBibInput.value = ''; 
+    bibInput.value = '';
+    updateClearButton();
+    trigger(); 
+    bottomBibInput.focus(); 
+  });
+
+  // File picker handlers
+  async function handleFileChange(file) {
     if (!file) return;
     try {
       setStatus(`Membaca ${file.name}…`, false, true);
@@ -2038,13 +2602,27 @@
       setStatus(`Berhasil memuat ${file.name} dan menyimpannya ke cache. Ketik untuk mencari.`);
     } catch (e) {
       setStatus(`Gagal membaca berkas JSON: ${e.message}`, true, true);
-    } finally {
-      ev.target.value = '';
     }
+  }
+
+  filePicker.addEventListener('change', async (ev) => {
+    const file = ev.target.files?.[0];
+    await handleFileChange(file);
+    ev.target.value = '';
   });
 
+  mobileFilePicker.addEventListener('change', async (ev) => {
+    const file = ev.target.files?.[0];
+    await handleFileChange(file);
+    ev.target.value = '';
+  });
+
+  // Browse and cache handlers
   browseBtn.addEventListener('click', browseAll);
+  mobileBrowseBtn.addEventListener('click', browseAll);
+  
   clearCache.addEventListener('click', async () => { await cacheClear(); });
+  mobileClearCache.addEventListener('click', async () => { await cacheClear(); });
   
   themeToggle.addEventListener('click', () => {
     const cur = document.documentElement.getAttribute('data-theme');
@@ -2067,6 +2645,11 @@
   
   toTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Resize handler for mobile layout
+  window.addEventListener('resize', () => {
+    setupMobileLayout();
   });
 
   // Export CSV functionality
@@ -2112,8 +2695,9 @@
     }
   }
 
-  // Initialize clear button state
+  // Initialize
   updateClearButton();
+  setupMobileLayout();
 })();
 </script>
 </body>
