@@ -1977,21 +1977,77 @@
     updatePills('cache', idb ? 'cache: siap' : 'cache: cadangan localStorage');
     
     try {
-      setStatus('Mengambil ./bib_export.json…', false, true);
+      setStatus('Loading dataset chunks...', false, true);
+      
+      // Try to load chunked files
+      const chunks = ['part1', 'part2', 'part3', 'part4'];
+      const allData = [];
+      let loadedChunks = 0;
+      
+      for (const chunk of chunks) {
+        try {
+          setStatus(`Loading ${chunk}... (${loadedChunks + 1}/${chunks.length})`, false, true);
+          const res = await fetch(`./bib_export_${chunk}.json`, { cache: 'no-store' });
+          
+          if (!res.ok) {
+            console.warn(`Chunk ${chunk} not found (${res.status}), trying single file...`);
+            break;
+          }
+          
+          const chunkData = await res.json();
+          allData.push(...chunkData);
+          loadedChunks++;
+          
+          // Update progress
+          updatePills('dataset', `dataset: loading... (${allData.length} foto)`);
+          
+        } catch (e) {
+          console.warn(`Failed to load chunk ${chunk}:`, e);
+          // If first chunk fails, try single file
+          if (chunk === 'part1') {
+            throw new Error('Chunks not available, trying single file');
+          }
+          break;
+        }
+      }
+      
+      // If we loaded at least one chunk successfully
+      if (allData.length > 0) {
+        ingest(allData, `chunked dataset (${loadedChunks} parts)`);
+        await cachePut({ label: `chunked dataset (${loadedChunks} parts)`, data: allData });
+        setStatus(`Berhasil dimuat ${loadedChunks} chunks dan disimpan ke cache. Ketik untuk mencari.`);
+        return;
+      }
+      
+      // Fallback to single file if chunks not available
+      console.log('Chunks not available, trying single file...');
+      setStatus('Chunks tidak ditemukan, mencoba file tunggal...', false, true);
+      
       const res = await fetch('./bib_export.json', { cache: 'no-store' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
+      
+      // Add timeout for large files
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Loading timeout')), 30000)
+      );
+      
+      const jsonPromise = res.json();
+      const json = await Promise.race([jsonPromise, timeoutPromise]);
+      
       ingest(json, 'bib_export.json');
       await cachePut({ label: 'bib_export.json', data: json });
-      setStatus('Berhasil dimuat dari file dan disimpan ke cache. Ketik untuk mencari.');
+      setStatus('Berhasil dimuat dari file tunggal dan disimpan ke cache. Ketik untuk mencari.');
+      
     } catch (e) {
-      setStatus('Gagal mengambil file; mencoba dataset yang tersimpan…');
+      console.error('Failed to load dataset:', e);
+      setStatus('Gagal mengambil dataset; mencoba cache yang tersimpan…');
+      
       const cached = await cacheGet();
       if (cached?.data && Array.isArray(cached.data)) {
         ingest(cached.data, cached.label || 'cache');
         setStatus('Dimuat dari cache. Ketik untuk mencari.');
       } else {
-        setStatus('Tidak ada dataset. Pilih berkas JSON untuk memuat.');
+        setStatus('Dataset tidak tersedia. Pilih berkas JSON untuk memuat manual.');
         noDataEl.hidden = false;
       }
     }
