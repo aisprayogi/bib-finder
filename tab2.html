@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekonomi di Balik Layar: Model Bisnis & Ekosistem Aplikasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/serif.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary-color: #1a4d80;
+            --secondary-color: #2d5f8d;
+            --accent-color: #5a8fb4;
+            --text-dark: #2c3e50;
+        }
+        
+        .reveal {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 33px;
+        }
+        
+        .reveal h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 18px;
+            line-height: 1.1;
+        }
+        
+        .reveal h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 4px solid var(--accent-color);
+            padding-bottom: 12px;
+        }
+        
+        .reveal h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5em;
+            color: var(--secondary-color);
+            margin: 15px 0 10px 0;
+            font-weight: 600;
+        }
+        
+        .reveal h4 {
+            font-size: 1.3em;
+            color: var(--primary-color);
+            margin: 10px 0 8px 0;
+            font-weight: 600;
+        }
+        
+        .reveal section {
+            text-align: left;
+        }
+        
+        .reveal .center {
+            text-align: center;
+        }
+        
+        .reveal p {
+            line-height: 1.4;
+            margin: 8px 0;
+            font-size: 1em;
+        }
+        
+        .reveal ul, .reveal ol {
+            margin: 10px 0 10px 25px;
+        }
+        
+        .reveal li {
+            margin-bottom: 6px;
+            line-height: 1.4;
+            font-size: 0.95em;
+        }
+        
+        .business-model-card {
+            background: white;
+            color: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            border-left: 5px solid;
+        }
+        
+        .model-advertising { border-left-color: #e74c3c; }
+        .model-freemium { border-left-color: #3498db; }
+        .model-iap { border-left-color: #f39c12; }
+        .model-subscription { border-left-color: #27ae60; }
+        .model-paid { border-left-color: #9b59b6; }
+        .model-marketplace { border-left-color: #34495e; }
+        
+        .business-model-card h4 {
+            color: #1a1a1a;
+            font-size: 1.2em;
+        }
+        
+        .business-model-card p {
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+        
+        .ecosystem-player {
+            background: white;
+            color: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            border: 2px solid #e0e0e0;
+        }
+        
+        .ecosystem-player h4 {
+            color: var(--primary-color);
+            font-size: 1.2em;
+        }
+        
+        .ecosystem-player p {
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+        
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .pros-box, .cons-box {
+            background: white;
+            color: #1a1a1a;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        
+        .pros-box {
+            border-left: 5px solid #27ae60;
+        }
+        
+        .cons-box {
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .pros-box h4 {
+            color: #27ae60;
+            font-size: 1.15em;
+            font-weight: 700;
+        }
+        
+        .cons-box h4 {
+            color: #e74c3c;
+            font-size: 1.15em;
+            font-weight: 700;
+        }
+        
+        .pros-box ul, .cons-box ul {
+            font-size: 0.9em;
+            margin: 8px 0 0 20px;
+            color: #2c3e50;
+        }
+        
+        .pros-box li, .cons-box li {
+            margin-bottom: 5px;
+        }
+        
+        .highlight-box {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            color: #664d03;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+        
+        .highlight-box strong {
+            color: #664d03;
+            font-weight: 700;
+        }
+        
+        .quote-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            font-style: italic;
+            font-size: 1em;
+            color: #1a237e;
+        }
+        
+        .data-flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .flow-step {
+            background: white;
+            color: #1a1a1a;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            font-weight: 700;
+            text-align: center;
+            font-size: 0.9em;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .flow-arrow {
+            font-size: 2em;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .stat-highlight {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin: 15px 0 8px 0;
+        }
+        
+        .flywheel-step {
+            background: white;
+            color: #1a1a1a;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            border-left: 5px solid var(--accent-color);
+            font-size: 0.95em;
+        }
+        
+        .flywheel-step strong {
+            color: var(--primary-color);
+        }
+        
+        .api-example-box {
+            background: white;
+            border: 3px solid #dee2e6;
+            color: #1a1a1a;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-size: 0.9em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .api-example-box h4 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+        
+        .api-example-box p {
+            color: #2c3e50;
+        }
+        
+        .key-takeaway {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+            font-size: 0.95em;
+        }
+        
+        .key-takeaway strong {
+            color: white;
+            font-weight: 700;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .section-title {
+            background: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .section-title h1, .section-title h2, .section-title h3 {
+            color: white;
+            border: none;
+            margin-bottom: 12px;
+        }
+        
+        .section-title p {
+            margin: 12px 0;
+            font-size: 0.95em;
+            color: white;
+        }
+        
+        .section-title .ecosystem-player {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a1a1a;
+        }
+        
+        .section-title .ecosystem-player h4 {
+            color: var(--primary-color);
+        }
+        
+        .section-title .ecosystem-player p {
+            color: #2c3e50;
+        }
+        
+        .emphasis {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .light-bg {
+            background: rgba(255,255,255,0.98);
+            padding: 30px;
+            border-radius: 10px;
+            color: #1a1a1a;
+        }
+        
+        .light-bg h2, .light-bg h3, .light-bg h4 {
+            color: var(--primary-color);
+        }
+        
+        .light-bg p, .light-bg li {
+            color: #2c3e50;
+        }
+        
+        .compact-list li {
+            margin-bottom: 5px;
+            line-height: 1.35;
+        }
+        
+        .small-text {
+            font-size: 0.9em;
+        }
+        
+        .tiny-text {
+            font-size: 0.85em;
+        }
+        
+        .mini-card {
+            padding: 10px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Judul -->
+            <section data-background-color="#1a4d80">
+                <div class="section-title">
+                    <h1>Ekonomi di Balik Layar</h1>
+                    <h2 style="font-size: 1.2em; margin-top: 20px;">Model Bisnis & Ekosistem Aplikasi</h2>
+                    <div style="margin-top: 35px; font-size: 0.82em;">
+                        <p>Mata Kuliah: Teknologi Aplikasi Bergerak</p>
+                        <p style="margin-top: 12px;">Memahami Mekanisme Finansial dan Ekosistem Digital</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 2: Pendahuluan -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Pendahuluan</h2>
+                    <p style="margin-bottom: 15px;">Presentasi ini membahas:</p>
+                    <ul>
+                        <li>Mekanisme finansial di balik aplikasi digital</li>
+                        <li>Model bisnis untuk menghasilkan pendapatan</li>
+                        <li>Aktor-aktor utama dalam ekosistem</li>
+                        <li>Dinamika ekonomi platform digital</li>
+                        <li>Relevansi dengan industri digital Indonesia</li>
+                    </ul>
+                    <div class="highlight-box" style="margin-top: 18px;">
+                        <strong>Fokus:</strong> Memahami bagaimana aplikasi menghasilkan uang dan siapa saja yang terlibat.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Pertanyaan Fundamental -->
+            <section data-background-color="#ffffff">
+                <div class="light-bg">
+                    <h2 class="center">Pertanyaan Fundamental</h2>
+                    <div class="quote-box" style="margin-top: 30px;">
+                        "Bagaimana aplikasi gratis dapat menghasilkan uang?"
+                    </div>
+                    <div class="quote-box">
+                        "Jika Anda tidak membayar untuk produknya, maka Anda-lah produknya."
+                    </div>
+                    <p style="margin-top: 20px;">Dalam layanan digital gratis, <span class="emphasis">data pribadi dan perhatian pengguna</span> menjadi komoditas bernilai ekonomi yang dimonetisasi kepada pengiklan.</p>
+                </div>
+            </section>
+
+            <!-- Slide 4: Overview Model Bisnis -->
+            <section data-background-color="#2d5f8d">
+                <div class="section-title">
+                    <h2>Enam Model Bisnis Aplikasi</h2>
+                    <div class="grid-3" style="margin-top: 20px;">
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; margin-bottom: 5px; color: var(--primary-color);">1. Periklanan</h4>
+                            <p style="font-size: 0.85em; color: #2c3e50;">Iklan</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; margin-bottom: 5px; color: var(--primary-color);">2. Freemium</h4>
+                            <p style="font-size: 0.85em; color: #2c3e50;">Gratis+Premium</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; margin-bottom: 5px; color: var(--primary-color);">3. In-App</h4>
+                            <p style="font-size: 0.85em; color: #2c3e50;">Beli di app</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; margin-bottom: 5px; color: var(--primary-color);">4. Subscription</h4>
+                            <p style="font-size: 0.85em; color: #2c3e50;">Langganan</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; margin-bottom: 5px; color: var(--primary-color);">5. Paid App</h4>
+                            <p style="font-size: 0.85em; color: #2c3e50;">Bayar download</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; margin-bottom: 5px; color: var(--primary-color);">6. Marketplace</h4>
+                            <p style="font-size: 0.85em; color: #2c3e50;">Komisi</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Model 1: Advertising -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Model 1: Periklanan</h2>
+                    <div class="business-model-card model-advertising">
+                        <h4>Deskripsi</h4>
+                        <p>Aplikasi gratis, pendapatan dari iklan (tayangan/klik).</p>
+                    </div>
+                    <div class="business-model-card model-advertising">
+                        <h4>Contoh: TikTok</h4>
+                        <p>Mayoritas pendapatan dari in-feed ads dan branded content.</p>
+                    </div>
+                    <div class="pros-cons-grid" style="margin-top: 15px;">
+                        <div class="pros-box">
+                            <h4>Kelebihan</h4>
+                            <ul>
+                                <li>Barrier rendah</li>
+                                <li>Pertumbuhan cepat</li>
+                                <li>Skalabilitas tinggi</li>
+                            </ul>
+                        </div>
+                        <div class="cons-box">
+                            <h4>Tantangan</h4>
+                            <ul>
+                                <li>Butuh user besar</li>
+                                <li>Iklan ganggu UX</li>
+                                <li>Persaingan tinggi</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Model 2: Freemium -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Model 2: Freemium</h2>
+                    <div class="business-model-card model-freemium">
+                        <h4>Deskripsi</h4>
+                        <p>Inti gratis, fitur premium berbayar. Tarik banyak user lalu konversi.</p>
+                    </div>
+                    <div class="business-model-card model-freemium">
+                        <h4>Contoh: Spotify</h4>
+                        <p>Gratis: iklan + batasan. Premium: tanpa iklan, audio HD, offline.</p>
+                    </div>
+                    <div class="pros-cons-grid" style="margin-top: 15px;">
+                        <div class="pros-box">
+                            <h4>Kelebihan</h4>
+                            <ul>
+                                <li>Bangun loyalitas</li>
+                                <li>Try before buy</li>
+                                <li>Funnel jelas</li>
+                            </ul>
+                        </div>
+                        <div class="cons-box">
+                            <h4>Tantangan</h4>
+                            <ul>
+                                <li>Konversi 2-5%</li>
+                                <li>Balance sulit</li>
+                                <li>Butuh value kuat</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Model 3: In-App Purchase -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Model 3: In-App Purchase</h2>
+                    <div class="business-model-card model-iap">
+                        <h4>Deskripsi</h4>
+                        <p>Jual barang virtual/konten digital dalam app. Umum di game.</p>
+                    </div>
+                    <div class="business-model-card model-iap">
+                        <h4>Contoh: Mobile Legends</h4>
+                        <p>Jual diamond & skin hero. Opsional, tingkatkan experience.</p>
+                    </div>
+                    <div class="pros-cons-grid" style="margin-top: 15px;">
+                        <div class="pros-box">
+                            <h4>Kelebihan</h4>
+                            <ul>
+                                <li>Revenue dari "whale"</li>
+                                <li>Pricing fleksibel</li>
+                                <li>Berkelanjutan</li>
+                            </ul>
+                        </div>
+                        <div class="cons-box">
+                            <h4>Tantangan</h4>
+                            <ul>
+                                <li>Balance gameplay</li>
+                                <li>Risiko pay-to-win</li>
+                                <li>Regulasi loot box</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Model 4: Subscription -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Model 4: Subscription</h2>
+                    <div class="business-model-card model-subscription">
+                        <h4>Deskripsi</h4>
+                        <p>Bayar berkala untuk akses. Pendapatan stabil & predictable.</p>
+                    </div>
+                    <div class="business-model-card model-subscription">
+                        <h4>Contoh: Netflix, Spotify Premium</h4>
+                        <p>Langganan bulanan untuk unlimited konten.</p>
+                    </div>
+                    <div class="pros-cons-grid" style="margin-top: 15px;">
+                        <div class="pros-box">
+                            <h4>Kelebihan</h4>
+                            <ul>
+                                <li>Pendapatan stabil</li>
+                                <li>LTV tinggi</li>
+                                <li>Cash flow konsisten</li>
+                            </ul>
+                        </div>
+                        <div class="cons-box">
+                            <h4>Tantangan</h4>
+                            <ul>
+                                <li>Beri nilai terus</li>
+                                <li>Kelola churn</li>
+                                <li>Banyak kompetitor</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Model 5: Paid App -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Model 5: Paid App</h2>
+                    <div class="business-model-card model-paid">
+                        <h4>Deskripsi</h4>
+                        <p>Bayar sekali untuk download. Jarang untuk pasar massal.</p>
+                    </div>
+                    <div class="business-model-card model-paid">
+                        <h4>Contoh: Procreate, Monument Valley</h4>
+                        <p>One-time payment, akses penuh, tanpa iklan.</p>
+                    </div>
+                    <div class="pros-cons-grid" style="margin-top: 15px;">
+                        <div class="pros-box">
+                            <h4>Kelebihan</h4>
+                            <ul>
+                                <li>Pemasukan langsung</li>
+                                <li>Tanpa iklan</li>
+                                <li>UX fokus</li>
+                            </ul>
+                        </div>
+                        <div class="cons-box">
+                            <h4>Tantangan</h4>
+                            <ul>
+                                <li>Sulit dapat user</li>
+                                <li>Value harus kuat</li>
+                                <li>Alternatif gratis</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Model 6: Marketplace Part 1 -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Model 6: Marketplace Fee</h2>
+                    <div class="business-model-card model-marketplace">
+                        <h4>Deskripsi</h4>
+                        <p style="font-size: 0.88em;">Platform pertemukan buyer-seller, ambil komisi.</p>
+                    </div>
+                    <div class="business-model-card model-marketplace">
+                        <h4>Contoh: Gojek, Tokopedia, Airbnb</h4>
+                        <p style="font-size: 0.88em;">Perantara ambil % dari setiap transaksi.</p>
+                    </div>
+                    <div class="pros-cons-grid" style="margin-top: 12px;">
+                        <div class="pros-box">
+                            <h4>Kelebihan</h4>
+                            <ul>
+                                <li>Skala tanpa inventory</li>
+                                <li>Revenue per transaksi</li>
+                                <li>Network effect</li>
+                            </ul>
+                        </div>
+                        <div class="cons-box">
+                            <h4>Tantangan</h4>
+                            <ul>
+                                <li>Chicken-egg problem</li>
+                                <li>Trust dua sisi</li>
+                                <li>CAC awal tinggi</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Model 6: Part 2 -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Marketplace: Tantangan Utama</h2>
+                    <div class="highlight-box">
+                        <h4>Masalah "Chicken and Egg"</h4>
+                        <p style="font-size: 0.9em;">Butuh banyak supply (driver/penjual) dan demand (user) bersamaan.</p>
+                    </div>
+                    <div class="ecosystem-player" style="margin-top: 10px;">
+                        <h4>Solusi</h4>
+                        <ul style="font-size: 0.85em;">
+                            <li>Bangun ekosistem dua sisi seimbang</li>
+                            <li>Insentif awal (subsidi, promo)</li>
+                            <li>Menangkan trust kedua sisi</li>
+                            <li>Platform jadi quality control</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ekosistem Overview -->
+            <section data-background-color="#2d5f8d">
+                <div class="section-title">
+                    <h2>Pemain Utama Ekosistem</h2>
+                    <p style="margin-top: 15px; color: white;">Tidak ada aplikasi berdiri sendiri. Semua bagian dari ekosistem kompleks.</p>
+                    <div class="grid-3" style="margin-top: 20px;">
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; color: var(--primary-color);">Developer</h4>
+                            <p style="color: #2c3e50;">Pembuat</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; color: var(--primary-color);">User</h4>
+                            <p style="color: #2c3e50;">Pengguna</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; color: var(--primary-color);">Platform</h4>
+                            <p style="color: #2c3e50;">Pemilik</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; color: var(--primary-color);">Advertiser</h4>
+                            <p style="color: #2c3e50;">Pengiklan</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; color: var(--primary-color);">Ad Network</h4>
+                            <p style="color: #2c3e50;">Jaringan</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1em; color: var(--primary-color);">Payment</h4>
+                            <p style="color: #2c3e50;">Pembayaran</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ekosistem: Developer -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Developer (Pengembang)</h2>
+                    <div class="ecosystem-player">
+                        <h4>Peran</h4>
+                        <p style="font-size: 0.88em;">Otak di balik aplikasi - dari individu hingga perusahaan besar.</p>
+                    </div>
+                    <div class="ecosystem-player">
+                        <h4>Tanggung Jawab</h4>
+                        <ul style="font-size: 0.85em;">
+                            <li>Rancang dan kembangkan aplikasi</li>
+                            <li>Maintenance dan update</li>
+                            <li>Tentukan strategi monetisasi</li>
+                            <li>Tarik dan retain pengguna</li>
+                            <li>Optimasi user experience</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ekosistem: User -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>User (Pengguna)</h2>
+                    <div class="ecosystem-player">
+                        <h4>Peran</h4>
+                        <p style="font-size: 0.88em;">Nyawa ekosistem. Tanpa user, tidak ada ekonomi aplikasi.</p>
+                    </div>
+                    <div class="ecosystem-player">
+                        <h4>Kontribusi</h4>
+                        <ul style="font-size: 0.85em;">
+                            <li>Gunakan aplikasi dan layanan</li>
+                            <li>Hasilkan data perilaku</li>
+                            <li>Beri feedback untuk perbaikan</li>
+                            <li>Kontribusi metrik: DAU, MAU</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box" style="margin-top: 8px;">
+                        <strong>Model Gratis:</strong> User "bayar" dengan data & perhatian → dimonetisasi via iklan.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ekosistem: Platform Owner -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Platform Owner</h2>
+                    <div class="grid-2" style="margin-bottom: 12px;">
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1.1em;">Apple</h4>
+                            <p>iOS App Store</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1.1em;">Google</h4>
+                            <p>Play Store</p>
+                        </div>
+                    </div>
+                    <div class="ecosystem-player">
+                        <h4>Fungsi</h4>
+                        <p>Penjaga gerbang: infrastruktur distribusi & aturan main.</p>
+                    </div>
+                    <p class="stat-highlight">30%</p>
+                    <p class="center" style="margin-top: 8px;">Komisi standar (15% untuk dev kecil)</p>
+                    <div class="highlight-box" style="margin-top: 12px;">
+                        Kontrol akses & bisa hapus app yang melanggar.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ekosistem: Advertiser -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Advertiser & Ad Network</h2>
+                    <div class="ecosystem-player">
+                        <h4>Advertiser</h4>
+                        <p style="font-size: 0.88em;">Brand bayar tampilkan iklan. Contoh: Unilever, Samsung, Tokopedia.</p>
+                    </div>
+                    <div class="ecosystem-player">
+                        <h4>Ad Network</h4>
+                        <p style="font-size: 0.88em;">Perantara cocokkan iklan + target. Contoh: AdMob, FB Audience Network.</p>
+                    </div>
+                    <div class="ecosystem-player">
+                        <h4>Kolaborasi</h4>
+                        <p style="font-size: 0.88em;">Advertiser → audiens | Developer → revenue share | Otomatis skala besar.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ekosistem: Payment -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Payment Gateway</h2>
+                    <div class="ecosystem-player">
+                        <h4>Fungsi</h4>
+                        <p style="font-size: 0.88em;">Kasir digital fasilitasi transaksi aman user-aplikasi.</p>
+                    </div>
+                    <div class="ecosystem-player">
+                        <h4>Pemain Indonesia</h4>
+                        <p style="font-size: 0.88em;"><strong>Midtrans, Xendit, Stripe, PayPal</strong> - Hubungkan ke bank, e-wallet, kartu.</p>
+                    </div>
+                    <div class="highlight-box">
+                        Ambil fee per transaksi, tapi crucial: startup tak perlu bangun sistem payment sendiri.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ekosistem: Interaksi -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Interaksi Antar Pemain</h2>
+                    <div class="ecosystem-player">
+                        <h4>Rantai Nilai</h4>
+                        <ul style="font-size: 0.82em;">
+                            <li><strong>Developer</strong> → <strong>Platform:</strong> distribusi</li>
+                            <li><strong>Developer</strong> → <strong>Ad Network:</strong> monetisasi</li>
+                            <li><strong>Developer</strong> → <strong>Payment:</strong> proses bayar</li>
+                            <li><strong>User</strong> gratis ← <strong>Advertiser</strong> bayar</li>
+                            <li><strong>Platform:</strong> dapat komisi transaksi</li>
+                        </ul>
+                    </div>
+                    <div class="key-takeaway">
+                        Semua saling bergantung. Sukses satu → sukses lainnya.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Flywheel Part 1 -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Flywheel Effect</h2>
+                    <div class="quote-box">
+                        Network effect → pertumbuhan makin cepat, seperti roda gila makin kencang.
+                    </div>
+                    <h3>Studi Kasus: Gojek</h3>
+                    <div class="flywheel-step">
+                        <strong>1.</strong> Banyak driver → tunggu singkat → tarik penumpang
+                    </div>
+                    <div class="flywheel-step">
+                        <strong>2.</strong> Banyak penumpang → order banyak → driver untung
+                    </div>
+                    <div class="flywheel-step">
+                        <strong>3.</strong> User besar → GoFood tumbuh → restoran gabung
+                    </div>
+                    <div class="flywheel-step">
+                        <strong>4.</strong> GoPay integrasi → ekosistem lengkap → loyalitas naik
+                    </div>
+                </div>
+            </section>
+
+            <!-- Flywheel Part 2 -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Integrasi: Gojek × Google Maps</h2>
+                    <div class="ecosystem-player">
+                        <h4>Kolaborasi</h4>
+                        <p>Partner Google Maps untuk navigasi tanpa bangun peta sendiri.</p>
+                    </div>
+                    <div class="grid-2" style="margin-top: 15px;">
+                        <div class="ecosystem-player" style="text-align: center; padding: 15px;">
+                            <p class="stat-highlight">20%</p>
+                            <p>Lebih cepat<br>pick-up</p>
+                        </div>
+                        <div class="ecosystem-player" style="text-align: center; padding: 15px;">
+                            <p class="stat-highlight">+3%</p>
+                            <p>Order<br>completion</p>
+                        </div>
+                    </div>
+                    <div class="key-takeaway" style="margin-top: 15px;">
+                        Network effect + API = Competitive advantage sulit ditandingi.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tugas Riset & Diskusi -->
+            <section data-background-color="#2d5f8d">
+                <div class="section-title">
+                    <h2>Tugas Riset & Diskusi Kelas</h2>
+                    <h3 style="color: white; margin-top: 15px;">Studi Kasus: Flywheel Effect</h3>
+                    
+                    <div class="ecosystem-player" style="margin-top: 20px; text-align: left;">
+                        <h4>Instruksi</h4>
+                        <p style="color: #2c3e50;">Pilih satu perusahaan digital (Indonesia atau internasional) dan analisis bagaimana mereka menerapkan flywheel effect dalam ekosistem mereka.</p>
+                    </div>
+
+                    <div class="ecosystem-player" style="margin-top: 12px; text-align: left;">
+                        <h4>Contoh Perusahaan</h4>
+                        <div class="grid-2" style="gap: 10px; margin-top: 8px;">
+                            <div style="background: white; padding: 8px; border-radius: 5px; border-left: 4px solid #27ae60;">
+                                <p style="color: #1a1a1a; font-size: 0.9em; margin: 0;"><strong>Indonesia:</strong> Tokopedia, Bukalapak, Shopee, Traveloka</p>
+                            </div>
+                            <div style="background: white; padding: 8px; border-radius: 5px; border-left: 4px solid #3498db;">
+                                <p style="color: #1a1a1a; font-size: 0.9em; margin: 0;"><strong>Internasional:</strong> Amazon, Uber, Airbnb, Netflix</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ecosystem-player" style="margin-top: 12px; text-align: left;">
+                        <h4>Pertanyaan Pemandu</h4>
+                        <ol style="color: #2c3e50; font-size: 0.9em; margin: 8px 0 0 20px; line-height: 1.4;">
+                            <li>Bagaimana roda gila perusahaan ini bekerja? (Identifikasi siklus)</li>
+                            <li>Siapa saja pemain dalam ekosistem mereka?</li>
+                            <li>Model bisnis apa yang digunakan?</li>
+                            <li>Apa keunggulan kompetitif dari flywheel mereka?</li>
+                            <li>Tantangan apa yang mereka hadapi?</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rantai Nilai Data -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Rantai Nilai Data</h2>
+                    <h3>Dari Data Jadi Pendapatan</h3>
+                    <div class="data-flow-container" style="margin-top: 15px;">
+                        <div class="flow-step">User Aktif</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">Data</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">Profil</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">Target</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step" style="background: #d4edda;">Uang</div>
+                    </div>
+                    <div class="ecosystem-player" style="margin-top: 15px;">
+                        <h4>Mekanisme</h4>
+                        <ol style="font-size: 0.82em;">
+                            <li>Aktivitas user dicatat (klik, view, lokasi)</li>
+                            <li>Data diolah jadi profil & segmentasi</li>
+                            <li>Advertiser pilih target spesifik</li>
+                            <li>Iklan tayang → bayar → revenue dibagi</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Ethics -->
+            <section data-background-color="#fff3cd">
+                <div class="light-bg">
+                    <h2>Pertimbangan Etis</h2>
+                    <div class="highlight-box">
+                        <h4>Transparansi & Privasi</h4>
+                        <p style="font-size: 0.85em;">User harus sadar data dikumpulkan. Perusahaan: transparansi, jaga keamanan, beri kontrol, patuhi regulasi.</p>
+                    </div>
+                    <div class="ecosystem-player">
+                        <h4>Regulasi Indonesia</h4>
+                        <p style="font-size: 0.88em;"><strong>UU PDP</strong> mengatur pengumpulan & perlindungan data.</p>
+                    </div>
+                    <div class="key-takeaway">
+                        Data = aset strategis. Kelola lalai → hilang trust + sanksi.
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Part 1 -->
+            <section data-background-color="#2d5f8d">
+                <div class="section-title">
+                    <h2>Application Programming Interface</h2>
+                    <h3 style="color: white; margin-top: 15px;">"Lem" Ekosistem Digital</h3>
+                    <p style="margin-top: 20px; font-size: 0.88em;">API = antarmuka komunikasi & pertukaran data antar aplikasi.</p>
+                    <div class="ecosystem-player" style="margin-top: 20px;">
+                        <h4>Fungsi</h4>
+                        <p style="font-size: 0.88em;">Lem satukan layanan digital, kolaborasi tanpa bangun semua dari nol.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Examples -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Contoh Penggunaan API</h2>
+                    <div class="api-example-box">
+                        <h4>Gojek × Google Maps</h4>
+                        <p>Navigasi tanpa bangun peta. Driver 20% lebih cepat.</p>
+                    </div>
+                    <div class="api-example-box">
+                        <h4>Traveloka × Airline/Hotel</h4>
+                        <p>Data real-time ratusan maskapai tanpa simpan lokal.</p>
+                    </div>
+                    <div class="api-example-box">
+                        <h4>OAuth Authentication</h4>
+                        <p>"Login with Google/Facebook" tanpa bikin akun baru.</p>
+                    </div>
+                    <div class="api-example-box">
+                        <h4>Payment Gateway</h4>
+                        <p>Midtrans, Xendit, Stripe - berbagai metode bayar.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Economy -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Ekonomi API</h2>
+                    <div class="ecosystem-player">
+                        <h4>Manfaat Startup Indonesia</h4>
+                        <ul style="font-size: 0.82em;">
+                            <li><strong>Percepat inovasi:</strong> Plug-and-play pihak ketiga</li>
+                            <li><strong>Fokus core:</strong> Delegasi fitur pendukung</li>
+                            <li><strong>Efisiensi:</strong> Hemat waktu & resource</li>
+                            <li><strong>Network effect:</strong> Makin terkoneksi → makin bernilai</li>
+                        </ul>
+                    </div>
+                    <div class="key-takeaway">
+                        API → ekosistem kolaboratif → pertumbuhan eksponensial.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Kesimpulan -->
+            <section data-background-color="#2d5f8d">
+                <div class="section-title">
+                    <h2>Kesimpulan</h2>
+                    <div class="ecosystem-player" style="margin-top: 15px; text-align: left;">
+                        <ol style="font-size: 0.82em; line-height: 1.4;">
+                            <li><strong>Model bisnis</strong> tentukan strategi: gratis vs premium</li>
+                            <li><strong>Ekosistem:</strong> developer, user, platform, advertiser, payment</li>
+                            <li><strong>Network effect</strong> = advantage: yang besar makin besar</li>
+                            <li><strong>Data = aset:</strong> user → data → insight → revenue</li>
+                            <li><strong>API:</strong> integrasi → partnership → pertumbuhan</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Relevansi Indonesia -->
+            <section data-background-color="#f5f7fa">
+                <div class="light-bg">
+                    <h2>Relevansi Indonesia</h2>
+                    <div class="ecosystem-player" style="margin-bottom: 12px;">
+                        <p>Ekonomi digital terbesar Asia Tenggara, pertumbuhan pesat.</p>
+                    </div>
+                    <div class="grid-2">
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1.1em;">Unicorn</h4>
+                            <p>Gojek, Tokopedia, Traveloka</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1.1em;">Mobile First</h4>
+                            <p>Akses via smartphone</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1.1em;">Fintech</h4>
+                            <p>E-wallet tumbuh pesat</p>
+                        </div>
+                        <div class="ecosystem-player" style="padding: 12px; text-align: center;">
+                            <h4 style="font-size: 1.1em;">Regulasi</h4>
+                            <p>UU PDP lindungi user</p>
+                        </div>
+                    </div>
+                    <div class="key-takeaway" style="margin-top: 15px;">
+                        Memahami ekonomi aplikasi = essential skill era digital.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Penutup -->
+            <section data-background-color="#1a4d80">
+                <div class="section-title">
+                    <h2>Terima Kasih</h2>
+                    <p style="font-size: 1.1em; margin-top: 25px;">Sesi Tanya Jawab dan Diskusi</p>
+                    <div style="margin-top: 40px; font-size: 0.88em;">
+                        <p>Silakan ajukan pertanyaan atau topik diskusi.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            slideNumber: 'c/t',
+            hash: true,
+            history: true,
+            keyboard: true,
+            overview: true,
+            center: true,
+            touch: true,
+            loop: false,
+            fragments: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            width: 1280,
+            height: 720,
+            margin: 0.04
+        });
+    </script>
+</body>
+</html>
